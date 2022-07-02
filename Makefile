@@ -1,4 +1,4 @@
 
 build:
 	wasm-pack build --target web 
-	mv ./pkg ./public/pkg
+	cp -r ./pkg ./public/

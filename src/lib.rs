@@ -1,18 +1,24 @@
-use hecs::*;
+mod html_bind;
+use std::cell::RefCell;
+use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 use web_sys::console;
 
+use html_bind::*;
+
+struct Demo {
+    count: i32,
+}
+
 #[wasm_bindgen(start)]
 pub fn main() {
-    let mut world = World::new();
-    // Nearly any type can be used as a component with zero boilerplate
-    let a = world.spawn((123, true, "abc"));
-    let b = world.spawn((42, false));
-    // Systems can be simple for loops
-    for (id, (number, &flag)) in world.query_mut::<(&mut i32, &bool)>() {
-        if flag {
-            *number *= 2;
-        }
-    }
-    console::log_1(&"hello world".into())
+    let count = Rc::new(RefCell::new(Demo { count: 1 }));
+    let count_2 = Rc::clone(&count);
+    let cls = move || {
+        let mut count = count_2.borrow_mut();
+        count.count += 1;
+        console::log_1(&count.count.into());
+    };
+    let api = Api::new();
+    api.run(cls);
 }
