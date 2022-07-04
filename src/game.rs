@@ -1,3 +1,4 @@
+mod entity;
 mod game_api;
 mod game_components;
 mod game_core;
