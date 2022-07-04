@@ -1,15 +1,11 @@
+use crate::game::*;
 use std::cell::RefCell;
 use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 
-pub struct WindowSize {
-    pub w: i32,
-    pub h: i32,
-}
-
 impl WindowSize {
-    pub fn new() -> WindowSize {
+    pub fn from_dom() -> WindowSize {
         let window = web_sys::window().unwrap();
         let w = window.inner_width().unwrap();
         let h = window.inner_height().unwrap();
@@ -46,33 +42,34 @@ impl CanvasElement {
     }
 
     pub fn resize(&self) {
-        let size = WindowSize::new();
+        let size = WindowSize::from_dom();
         self.canvas.set_height(size.h as u32);
         self.canvas.set_width(size.w as u32);
     }
 }
 
-pub struct Api {
-    canvas: CanvasElement,
+pub struct GameRunner<Api> {
+    api: Rc<RefCell<Api>>,
 }
 
-impl Api {
-    pub fn new() -> Api {
-        Api {
-            canvas: CanvasElement::new(),
+impl<Api: 'static> GameRunner<Api> {
+    pub fn new(api: Api) -> GameRunner<Api> {
+        GameRunner {
+            api: Rc::new(RefCell::new(api)),
         }
     }
     pub fn run<T>(&self, mut f: T)
     where
-        T: 'static + FnMut(),
+        T: 'static + FnMut(&Api),
     {
         let window = web_sys::window().unwrap();
         let window2 = web_sys::window().unwrap();
 
         let h = Rc::new(RefCell::<Option<Closure<dyn FnMut()>>>::new(None));
         let g = Rc::clone(&h);
+        let api = Rc::clone(&self.api);
         let cls = Closure::wrap(Box::new(move || {
-            f();
+            f(&api.borrow());
             window
                 .request_animation_frame(h.borrow().as_ref().unwrap().as_ref().unchecked_ref())
                 .unwrap();
@@ -81,5 +78,70 @@ impl Api {
         window2
             .request_animation_frame(g.borrow().as_ref().unwrap().as_ref().unchecked_ref())
             .unwrap();
+    }
+}
+
+pub struct HTMLApi {
+    canvas: CanvasElement,
+    window_size: WindowSize,
+    mouse_input: MouseInput,
+}
+
+impl HTMLApi {
+    pub fn new() -> HTMLApi {
+        HTMLApi {
+            canvas: CanvasElement::new(),
+            window_size: WindowSize::from_dom(),
+            mouse_input: MouseInput::default(),
+        }
+    }
+
+    pub fn update(&mut self) {
+        self.canvas.resize();
+        self.window_size = WindowSize::from_dom();
+    }
+}
+
+impl GameApi for HTMLApi {
+    fn window_size(&self) -> &WindowSize {
+        &self.window_size
+    }
+
+    fn draw_surface(&self, surface: Surface) {
+        if surface.points.len() > 0 {
+            self.canvas.ctx.begin_path();
+            self.canvas.ctx.set_fill_style(&surface.color.into());
+            let start = &surface.points[0];
+            self.canvas.ctx.move_to(start.x, start.y);
+            for (i, v) in surface.points.iter().enumerate() {
+                if i != 0 {
+                    self.canvas.ctx.line_to(v.x, v.y);
+                }
+                if i == surface.points.len() - 1 {
+                    self.canvas.ctx.line_to(start.x, start.y);
+                    self.canvas.ctx.fill();
+                }
+            }
+        }
+    }
+
+    fn set_element_position(&self, _point: Vec2, _id: &str) {
+        todo!()
+    }
+
+    fn resize_element(&self, _size: u32, _id: &str) {
+        todo!()
+    }
+
+    fn set_element_opacity(&self, _opacity: u32, _id: &str) {
+        todo!()
+    }
+
+    fn inputs(&self) -> &MouseInput {
+        &self.mouse_input
+    }
+
+    fn log(&self, msg: &str) {
+        web_sys::console::log_1(&msg.into())
     }
 }
