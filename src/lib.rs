@@ -6,10 +6,6 @@ use wasm_bindgen::prelude::*;
 use game::Game;
 use html_bind::*;
 
-struct Demo {
-    count: i32,
-}
-
 #[wasm_bindgen(start)]
 pub fn main() {
     let api = HTMLApi::new();
@@ -17,7 +13,6 @@ pub fn main() {
     let game = Game::new();
     let f: Box<dyn FnMut(&HTMLApi)> = Box::new(game.game_loop());
     runner.run(f)
-
     //let count = Rc::new(RefCell::new(Demo { count: 1 }));
     //let count_2 = Rc::clone(&count);
     //let cls = move || {

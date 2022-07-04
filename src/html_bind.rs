@@ -58,9 +58,12 @@ impl<Api: 'static> GameRunner<Api> {
             api: Rc::new(RefCell::new(api)),
         }
     }
+}
+
+impl GameRunner<HTMLApi> {
     pub fn run<T>(&self, mut f: T)
     where
-        T: 'static + FnMut(&Api),
+        T: 'static + FnMut(&HTMLApi),
     {
         let window = web_sys::window().unwrap();
         let window2 = web_sys::window().unwrap();
@@ -69,7 +72,9 @@ impl<Api: 'static> GameRunner<Api> {
         let g = Rc::clone(&h);
         let api = Rc::clone(&self.api);
         let cls = Closure::wrap(Box::new(move || {
-            f(&api.borrow());
+            let mut api = api.borrow_mut();
+            api.update();
+            f(&api);
             window
                 .request_animation_frame(h.borrow().as_ref().unwrap().as_ref().unchecked_ref())
                 .unwrap();
