@@ -115,7 +115,9 @@ impl GameApi for HTMLApi {
     fn draw_surface(&self, surface: Surface) {
         if surface.points.len() > 0 {
             self.canvas.ctx.begin_path();
-            self.canvas.ctx.set_fill_style(&surface.color.into());
+            self.canvas
+                .ctx
+                .set_fill_style(&surface.color.to_string().into());
             let start = &surface.points[0];
             self.canvas.ctx.move_to(start.x, start.y);
             for (i, v) in surface.points.iter().enumerate() {

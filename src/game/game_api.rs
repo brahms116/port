@@ -31,5 +31,9 @@ pub struct WindowSize {
 }
 
 pub fn map_vec2(a: &Vec2, center: &Vec2, window_size: &WindowSize) -> Vec2 {
-    todo!()
+    let window_center = Vec2::new(window_size.w as f64, window_size.h as f64) * 0.5;
+    let diff_vec = *a - *center;
+    /* Invert the y axis here, so that positive values go "up" */
+    let screen_pos = Vec2::new(window_center.x + diff_vec.x, window_center.y - diff_vec.y);
+    screen_pos
 }
