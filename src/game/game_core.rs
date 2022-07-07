@@ -83,3 +83,7 @@ impl RGBA {
         RGBA { r, g, b, a }
     }
 }
+
+pub trait Update {
+    fn update(&mut self);
+}

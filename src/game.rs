@@ -6,14 +6,16 @@ mod main_loop;
 mod setup;
 mod systems;
 
+use crate::animation::*;
 pub use game_api::*;
+use game_components::*;
 pub use game_core::*;
 use hecs::*;
 use main_loop::*;
 use setup::*;
 use std::cell::RefCell;
 use std::rc::Rc;
-
+use systems::*;
 pub struct Game {
     world: Rc<RefCell<World>>,
 }

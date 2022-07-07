@@ -25,6 +25,7 @@ impl Default for MouseInput {
     }
 }
 
+#[derive(Clone)]
 pub struct WindowSize {
     pub w: i32,
     pub h: i32,

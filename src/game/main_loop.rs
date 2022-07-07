@@ -1,9 +1,10 @@
-use super::game_api::*;
-use super::game_components::*;
-use super::systems::*;
+use super::*;
 use hecs::*;
 
 pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
+    /* Globals */
+    let camera_pos = get_camera_pos(world);
+
     /* Movement */
     for (_id, (pos, rot, movt)) in
         world.query_mut::<(&mut Position, Option<&Rotation>, &MovementDelta)>()
@@ -11,24 +12,23 @@ pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
         system_movement(pos, rot, movt);
     }
 
-    /* Opacity */
-    for (_id, (opt, delta)) in world.query_mut::<(&mut Opacity, &OpacityDelta)>() {
-        system_opacity(opt, delta)
+    /* Update animations */
+    for (_id, (evs, _)) in world.query_mut::<(&mut PSEVS, Option<()>)>() {
+        evs.update();
     }
 
     /* Rendering */
-    let camera_pos = get_camera_pos(world);
-    for (_id, (pos, rot, w, h, s_x, s_y, opt, surfaces)) in world.query_mut::<(
-        &Position,
-        Option<&Rotation>,
-        Option<&Width>,
-        Option<&Height>,
-        Option<&ScaleX>,
-        Option<&ScaleY>,
-        Option<&Opacity>,
-        &Surfaces,
-    )>() {
-        system_render(pos, rot, w, h, s_x, s_y, opt, surfaces, api, camera_pos);
+
+    for (_id, (pos, rot, surfaces)) in
+        world.query_mut::<(&Position, Option<&Rotation>, &Surfaces<()>)>()
+    {
+        system_render(pos, rot, surfaces, &mut (), api, camera_pos);
+    }
+
+    for (_id, (pos, rot, surfaces, evs)) in
+        world.query_mut::<(&Position, Option<&Rotation>, &Surfaces<PSEVS>, &mut PSEVS)>()
+    {
+        system_render(pos, rot, surfaces, evs, api, camera_pos);
     }
 
     /* Game Controller */
