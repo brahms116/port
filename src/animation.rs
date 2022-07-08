@@ -1,9 +1,8 @@
 pub trait Animation {
-    fn new(duration: u32) -> Self;
     fn duration(&self) -> u32;
     fn advance_frame(&mut self);
     fn is_complete(&self) -> bool;
-    fn poll(&mut self) -> f64;
+    fn poll(&self) -> f64;
     fn reset(&mut self);
 }
 
@@ -13,15 +12,17 @@ pub struct LinearAnimation {
     completed: bool,
 }
 
-impl Animation for LinearAnimation {
-    fn new(duration: u32) -> Self {
+impl LinearAnimation {
+    pub fn new(duration: u32) -> Self {
         LinearAnimation {
             duration,
             elasped_frames: 0,
             completed: false,
         }
     }
+}
 
+impl Animation for LinearAnimation {
     fn duration(&self) -> u32 {
         self.duration
     }
@@ -38,7 +39,7 @@ impl Animation for LinearAnimation {
         self.completed
     }
 
-    fn poll(&mut self) -> f64 {
+    fn poll(&self) -> f64 {
         if self.elasped_frames >= self.duration {
             return 1.0;
         }

@@ -3,32 +3,54 @@ use hecs::*;
 
 pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
     /* Globals */
-    let camera_pos = get_camera_pos(world);
+    let camera_transform = get_camera_transform(world);
+
+    /* Entity States */
+    for (_id, (player, random)) in world.query_mut::<(Option<&mut PlayerState>, Option<()>)>() {
+        if let Some(n) = player {
+            n.update()
+        }
+    }
+
+    /* Entity State Motion System */
+    for (_id, (transform, motion, player)) in world.query_mut::<(
+        &mut Transform,
+        &mut Motion,
+        (
+            Option<&mut PlayerState>,
+            Option<&StateMotionCb<PlayerState>>,
+        ),
+    )>() {
+        if let Some(state) = player.0 {
+            if let Some(cb) = player.1 {
+                cb.0(state, motion, transform)
+            }
+        }
+    }
 
     /* Movement */
-    for (_id, (pos, rot, movt)) in
-        world.query_mut::<(&mut Position, Option<&Rotation>, &MovementDelta)>()
-    {
-        system_movement(pos, rot, movt);
+    for (_id, (motion, transform)) in world.query_mut::<(&mut Motion, Option<&mut Transform>)>() {
+        system_motion(motion, transform)
     }
 
-    /* Update animations */
-    for (_id, (evs, _)) in world.query_mut::<(&mut PSEVS, Option<()>)>() {
-        evs.update();
-    }
-
-    /* Rendering */
-
-    for (_id, (pos, rot, surfaces)) in
-        world.query_mut::<(&Position, Option<&Rotation>, &Surfaces<()>)>()
-    {
-        system_render(pos, rot, surfaces, &mut (), api, camera_pos);
-    }
-
-    for (_id, (pos, rot, surfaces, evs)) in
-        world.query_mut::<(&Position, Option<&Rotation>, &Surfaces<PSEVS>, &mut PSEVS)>()
-    {
-        system_render(pos, rot, surfaces, evs, api, camera_pos);
+    /* Render System */
+    for (_id, (transform, player)) in world.query_mut::<(
+        &Transform,
+        (
+            Option<&mut PlayerState>,
+            Option<&StateRenderCb<PlayerState>>,
+        ),
+    )>() {
+        if let Some(state) = player.0 {
+            if let Some(render) = player.1 {
+                system_render(
+                    transform,
+                    render.0(state, api.window_size()),
+                    api,
+                    &camera_transform,
+                );
+            }
+        }
     }
 
     /* Game Controller */

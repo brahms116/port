@@ -8,32 +8,93 @@ pub struct FrameCount(pub u32);
 
 pub struct StageCount(pub u32);
 
-pub struct Surfaces<T>(pub fn(&mut T, &WindowSize) -> Vec<Surface>);
-
-pub struct Position(pub Vec2);
-
-pub struct MovementDelta(pub Vec2);
-
-pub struct Rotation(pub f64);
-
-pub struct RotationDelta(pub f64);
-
-/// Player Square Entity Visual State
-pub enum PSEVS {
-    Idle,
-    WidthPOF(LinearAnimation),
+#[derive(Default, Clone, Debug)]
+pub struct Transform {
+    pub position: Vec2,
+    pub rotation: f64,
 }
 
-impl Update for PSEVS {
-    fn update(&mut self) {
-        match self {
-            Self::WidthPOF(n) => {
-                if n.is_complete() {
-                    n.reset();
-                }
+#[derive(Default, Debug)]
+pub struct Motion {
+    pub vel: Vec2,
+    pub accel: Vec2,
+    pub angular_vel: f64,
+    pub angular_accel: f64,
+}
+
+pub struct RenderStatic(pub Vec<Surface>);
+
+pub struct StateRenderCb<State>(pub fn(&mut State, &WindowSize) -> Vec<Surface>);
+
+pub struct StateMotionCb<State>(pub fn(&mut State, &mut Motion, &mut Transform));
+
+pub struct UpdateStateCb<State>(pub fn(&mut State));
+
+pub enum PlayerDirection {
+    Front,
+    Back,
+}
+
+pub struct PlayerState {
+    pub state: PlayerStateKind,
+    pub config: PlayerStateConfig,
+}
+
+pub struct PlayerStateConfig {
+    pub max_travel_vel: f64,
+    pub travel_accel: f64,
+    pub squish_duration: u32,
+}
+
+impl Default for PlayerStateConfig {
+    fn default() -> Self {
+        Self {
+            max_travel_vel: 5.0,
+            travel_accel: 0.3,
+            squish_duration: 15,
+        }
+    }
+}
+
+impl PlayerState {
+    pub fn still() -> Self {
+        Self {
+            state: PlayerStateKind::Still,
+            config: PlayerStateConfig::default(),
+        }
+    }
+    pub fn post_motion(dir: PlayerDirection) -> Self {
+        let config = PlayerStateConfig::default();
+        Self {
+            state: PlayerStateKind::PostMotion((Sequence::new(config.squish_duration), dir)),
+            config,
+        }
+    }
+    pub fn motion() -> Self {
+        let config = PlayerStateConfig::default();
+        Self {
+            state: PlayerStateKind::Motion(Sequence::new(config.squish_duration)),
+            config,
+        }
+    }
+
+    pub fn update(&mut self) {
+        match &mut self.state {
+            PlayerStateKind::PostMotion(n) => n.0.advance_frame(),
+            PlayerStateKind::Motion(n) => {
                 n.advance_frame();
+                if n.poll() > 0.3 {
+                    n.advance_checkpoint();
+                }
             }
             _ => {}
         }
     }
+}
+
+pub enum PlayerStateKind {
+    Motion(Sequence),
+    Still,
+    Jump(Sequence),
+    PostMotion((Sequence, PlayerDirection)),
 }

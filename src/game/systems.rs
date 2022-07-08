@@ -1,34 +1,33 @@
-use super::game_api::*;
-use super::game_components::*;
-use super::game_core::*;
+use super::*;
 use hecs::*;
 
 pub fn system_update_frame(n: &mut FrameCount) {
     n.0 += 1;
 }
 
-pub fn get_camera_pos(world: &World) -> Vec2 {
-    for (_id, (_cam, pos)) in &mut world.query::<(&Camera, &Position)>() {
-        return pos.0;
+pub fn get_camera_transform(world: &World) -> Transform {
+    for (_id, (_cam, pos)) in &mut world.query::<(&Camera, &Transform)>() {
+        return pos.clone();
     }
-    return Vec2::default();
+    return Transform::default();
 }
 
-pub fn system_render<T: GameApi, E>(
-    pos: &Position,
-    _rot: Option<&Rotation>,
-    surfaces: &Surfaces<E>,
-    evs: &mut E,
+pub fn system_render<T: GameApi>(
+    transform: &Transform,
+    surfaces: Vec<Surface>,
     api: &T,
-    camera_pos: Vec2,
+    camera_transform: &Transform,
 ) {
-    for surface in &surfaces.0(evs, api.window_size()) {
-        let points: Vec<Vec2> = surface.points.iter().map(|e| *e + pos.0).collect();
+    for surface in &surfaces {
+        let points: Vec<Vec2> = surface
+            .points
+            .iter()
+            .map(|e| *e + transform.position)
+            .collect();
         /* Need to apply rotation */
-
         let points: Vec<Vec2> = points
             .iter()
-            .map(|e| map_vec2(e, &camera_pos, api.window_size()))
+            .map(|e| map_vec2(e, &camera_transform.position, api.window_size()))
             .collect();
 
         let screen_surface = Surface {
@@ -40,7 +39,11 @@ pub fn system_render<T: GameApi, E>(
     }
 }
 
-pub fn system_movement(pos: &mut Position, _rot: Option<&Rotation>, movt: &MovementDelta) {
-    /* TODO  Need to apply rotation here */
-    pos.0 = pos.0 + movt.0
+pub fn system_motion(motion: &mut Motion, transform: Option<&mut Transform>) {
+    motion.vel = motion.vel + motion.accel;
+    motion.angular_vel += motion.angular_accel;
+    if let Some(t) = transform {
+        t.position = t.position + motion.vel;
+        t.rotation += motion.angular_vel;
+    }
 }

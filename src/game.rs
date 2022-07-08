@@ -1,4 +1,5 @@
 mod entity;
+mod entity_animation;
 mod game_api;
 mod game_components;
 mod game_core;
@@ -8,6 +9,8 @@ mod systems;
 
 use crate::animation::*;
 pub use game_api::*;
+
+use entity_animation::*;
 use game_components::*;
 pub use game_core::*;
 use hecs::*;
