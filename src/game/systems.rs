@@ -43,6 +43,7 @@ pub fn system_motion(motion: &mut Motion, transform: Option<&mut Transform>) {
     motion.vel = motion.vel + motion.accel;
     motion.angular_vel += motion.angular_accel;
     //TODO: apply rotation
+    //TODO: Apply new or old rotation?
     if let Some(t) = transform {
         t.position = t.position + motion.vel;
         t.rotation += motion.angular_vel;
@@ -55,5 +56,6 @@ pub fn collision_player(
     motion: &mut Motion,
     correction_vec: Vec2,
 ) {
+    
     let x = 1;
 }

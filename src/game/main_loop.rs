@@ -30,8 +30,10 @@ pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
 
     /* Collision */
     for (id, (transform, collider)) in &mut world.query::<(&Transform, &BoxCollider)>() {
-        let collider_box = collider.rect().apply(transform);
-        let player_id: Option<Entity> = None;
+        let mut collider_box = collider.rect();
+        collider_box.apply(transform);
+        let mut player_id: Option<Entity> = None;
+        let mut correction: Option<Vec2> = None;
         /* Player Collision */
         for (_id, (p_transform, player, p_collider, p_motion)) in &mut world.query::<(
             &Transform,
@@ -39,7 +41,10 @@ pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
             &StateColliderCb<PlayerState>,
             &Motion,
         )>() {
-            let p_box = p_collider.0(player).rect().apply(p_transform);
+            let mut p_box = p_collider.0(player).rect();
+            p_box.apply(p_transform);
+            let res = Rect::check_collision(&collider_box, &p_box, p_motion.vel);
+            // IF RES IS SOME, COLLISION
         }
     }
 
