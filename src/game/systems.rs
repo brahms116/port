@@ -14,11 +14,11 @@ pub fn get_camera_transform(world: &World) -> Transform {
 
 pub fn system_render<T: GameApi>(
     transform: &Transform,
-    surfaces: Vec<Surface>,
+    surfaces: &Vec<Surface>,
     api: &T,
     camera_transform: &Transform,
 ) {
-    for surface in &surfaces {
+    for surface in surfaces {
         let points: Vec<Vec2> = surface
             .points
             .iter()
@@ -42,8 +42,18 @@ pub fn system_render<T: GameApi>(
 pub fn system_motion(motion: &mut Motion, transform: Option<&mut Transform>) {
     motion.vel = motion.vel + motion.accel;
     motion.angular_vel += motion.angular_accel;
+    //TODO: apply rotation
     if let Some(t) = transform {
         t.position = t.position + motion.vel;
         t.rotation += motion.angular_vel;
     }
+}
+
+pub fn collision_player(
+    state: &mut PlayerState,
+    transform: &mut Transform,
+    motion: &mut Motion,
+    correction_vec: Vec2,
+) {
+    let x = 1;
 }

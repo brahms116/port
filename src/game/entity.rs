@@ -9,7 +9,7 @@ pub fn player_square() -> (
 ) {
     type S = PlayerStateKind;
     type D = PlayerDirection;
-    fn render_cb(state: &mut PlayerState, _size: &WindowSize) -> Vec<Surface> {
+    fn render_cb(state: &PlayerState, _size: &WindowSize) -> Vec<Surface> {
         let color = RGBA::new(43, 43, 43, 1.0);
 
         let still_height = 16.0;
@@ -56,7 +56,7 @@ pub fn player_square() -> (
         };
 
         let mut results: Vec<Vec2> = vec![];
-        match &mut state.state {
+        match &state.state {
             S::PostMotion(n) => {
                 let val = n.0.poll();
                 let is_check = n.0.checkpoint() > 0;
@@ -143,7 +143,6 @@ pub fn player_square() -> (
             _ => {}
         }
     }
-
     (
         Transform::default(),
         Motion::default(),
@@ -153,4 +152,23 @@ pub fn player_square() -> (
     )
 }
 
-fn get_collision_box() {}
+pub fn collision_box() -> (Transform, RenderStatic, BoxCollider) {
+    let surfaces = vec![Surface {
+        points: vec![
+            Vec2::new(-8.0, 8.0),
+            Vec2::new(8.0, 8.0),
+            Vec2::new(8.0, -8.0),
+            Vec2::new(-8.0, -8.0),
+        ],
+        color: RGBA::new(255, 0, 0, 1.0),
+    }];
+
+    (
+        Transform {
+            position: Vec2::new(0.0, 200.0),
+            rotation: 0.0,
+        },
+        RenderStatic(surfaces),
+        BoxCollider::new(16.0, 16.0, Vec2::default()),
+    )
+}

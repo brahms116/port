@@ -8,10 +8,28 @@ pub struct FrameCount(pub u32);
 
 pub struct StageCount(pub u32);
 
+pub trait Transformable {
+    fn apply(&mut self, transform: &Transform);
+}
+
+impl Transformable for Rect {
+    // TODO Apply rotation here
+    fn apply(&mut self, transform: &Transform) {
+        self.x1y1 += transform.position;
+        self.x2y2 += transform.position;
+    }
+}
+
 #[derive(Default, Clone, Debug)]
 pub struct Transform {
     pub position: Vec2,
     pub rotation: f64,
+}
+
+impl Transform {
+    pub fn new(position: Vec2, rotation: f64) -> Self {
+        Self { position, rotation }
+    }
 }
 
 #[derive(Default, Debug)]
@@ -22,13 +40,40 @@ pub struct Motion {
     pub angular_accel: f64,
 }
 
+pub struct BoxCollider {
+    pub width: f64,
+    pub height: f64,
+    pub position: Vec2,
+}
+
+impl BoxCollider {
+    pub fn new(width: f64, height: f64, center: Vec2) -> Self {
+        Self {
+            width,
+            height,
+            position: center,
+        }
+    }
+
+    pub fn rect(&self) -> Rect {
+        let x = self.width / 2.0;
+        let y = self.height / 2.0;
+        Rect {
+            x2y2: Vec2::new(x, y),
+            x1y1: Vec2::new(-x, -y),
+        }
+    }
+}
+
+pub struct StateColliderCb<State>(pub fn(&State) -> BoxCollider);
+
 pub struct RenderStatic(pub Vec<Surface>);
 
-pub struct StateRenderCb<State>(pub fn(&mut State, &WindowSize) -> Vec<Surface>);
+pub struct StateRenderCb<State>(pub fn(&State, &WindowSize) -> Vec<Surface>);
 
 pub struct StateMotionCb<State>(pub fn(&mut State, &mut Motion, &mut Transform));
 
-pub struct UpdateStateCb<State>(pub fn(&mut State));
+// pub struct UpdateStateCb<State>(pub fn(&mut State));
 
 pub enum PlayerDirection {
     Front,
