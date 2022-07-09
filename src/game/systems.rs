@@ -5,8 +5,12 @@ pub fn system_update_frame(n: &mut FrameCount) {
     n.0 += 1;
 }
 
-pub fn get_camera_transform(world: &World) -> Transform {
-    for (_id, (_cam, pos)) in &mut world.query::<(&Camera, &Transform)>() {
+pub fn get_camera_transform(
+    world: &World,
+) -> Transform {
+    for (_id, (_cam, pos)) in &mut world
+        .query::<(&Camera, &Transform)>()
+    {
         return pos.clone();
     }
     return Transform::default();
@@ -27,7 +31,13 @@ pub fn system_render<T: GameApi>(
         /* Need to apply rotation */
         let points: Vec<Vec2> = points
             .iter()
-            .map(|e| map_vec2(e, &camera_transform.position, api.window_size()))
+            .map(|e| {
+                map_vec2(
+                    e,
+                    &camera_transform.position,
+                    api.window_size(),
+                )
+            })
             .collect();
 
         let screen_surface = Surface {
@@ -39,7 +49,10 @@ pub fn system_render<T: GameApi>(
     }
 }
 
-pub fn system_motion(motion: &mut Motion, transform: Option<&mut Transform>) {
+pub fn system_motion(
+    motion: &mut Motion,
+    transform: Option<&mut Transform>,
+) {
     motion.vel = motion.vel + motion.accel;
     motion.angular_vel += motion.angular_accel;
     //TODO: apply rotation
@@ -56,6 +69,10 @@ pub fn collision_player(
     motion: &mut Motion,
     correction_vec: Vec2,
 ) {
-    
-    let x = 1;
+    *state = PlayerState::post_motion(
+        PlayerDirection::Front,
+    );
+    motion.vel = Vec2::default();
+    motion.accel = Vec2::default();
+    transform.position += correction_vec;
 }

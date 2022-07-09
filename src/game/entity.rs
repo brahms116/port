@@ -6,6 +6,7 @@ pub fn player_square() -> (
     PlayerState,
     StateRenderCb<PlayerState>,
     StateMotionCb<PlayerState>,
+    StateColliderCb<PlayerState>,
 ) {
     type S = PlayerStateKind;
     type D = PlayerDirection;
@@ -143,12 +144,17 @@ pub fn player_square() -> (
             _ => {}
         }
     }
+
+    fn collider_cb(state: &PlayerState) -> BoxCollider {
+        BoxCollider::new(8.0, 8.0, Vec2::default())
+    }
     (
         Transform::default(),
         Motion::default(),
         PlayerState::motion(),
         StateRenderCb(render_cb),
         StateMotionCb(motion_cb),
+        StateColliderCb(collider_cb),
     )
 }
 

@@ -1,9 +1,13 @@
 use super::*;
 use hecs::*;
 
-pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
+pub fn main_loop<T: GameApi>(
+    world: &mut World,
+    api: &T,
+) {
     /* Globals */
-    let camera_transform = get_camera_transform(world);
+    let camera_transform =
+        get_camera_transform(world);
 
     /* Entity States */
     for (_id, (player, random)) in world.query_mut::<(Option<&mut PlayerState>, Option<()>)>() {
@@ -13,11 +17,16 @@ pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
     }
 
     /* Entity State Motion System */
-    for (_id, (transform, motion, player)) in world.query_mut::<(
-        &mut Transform,
-        &mut Motion,
-        Option<(&mut PlayerState, &StateMotionCb<PlayerState>)>,
-    )>() {
+    for (_id, (transform, motion, player)) in
+        world.query_mut::<(
+            &mut Transform,
+            &mut Motion,
+            Option<(
+                &mut PlayerState,
+                &StateMotionCb<PlayerState>,
+            )>,
+        )>()
+    {
         if let Some(p) = player {
             p.1 .0(p.0, motion, transform)
         }
@@ -29,34 +38,85 @@ pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
     }
 
     /* Collision */
-    for (id, (transform, collider)) in &mut world.query::<(&Transform, &BoxCollider)>() {
+    for (id, (transform, collider)) in &mut world
+        .query::<(&Transform, &BoxCollider)>()
+    {
         let mut collider_box = collider.rect();
         collider_box.apply(transform);
         let mut player_id: Option<Entity> = None;
         let mut correction: Option<Vec2> = None;
         /* Player Collision */
-        for (_id, (p_transform, player, p_collider, p_motion)) in &mut world.query::<(
+        for (
+            p_id,
+            (
+                p_transform,
+                player,
+                p_collider,
+                p_motion,
+            ),
+        ) in &mut world.query::<(
             &Transform,
             &PlayerState,
             &StateColliderCb<PlayerState>,
             &Motion,
         )>() {
-            let mut p_box = p_collider.0(player).rect();
+            let mut p_box =
+                p_collider.0(player).rect();
             p_box.apply(p_transform);
-            let res = Rect::check_collision(&collider_box, &p_box, p_motion.vel);
-            // IF RES IS SOME, COLLISION
+            let res = Rect::check_collision(
+                &collider_box,
+                &p_box,
+                p_motion.vel,
+            );
+            api.log(&format!("{:?}", res));
+            if let Some(v) = res {
+                player_id = Some(p_id);
+                correction = Some(v);
+            }
+            break;
+        }
+        if let Some(p_id) = player_id {
+            let correction = correction.unwrap();
+            let mut p_transform = world
+                .get_mut::<Transform>(p_id)
+                .unwrap();
+            let mut p_motion = world
+                .get_mut::<Motion>(p_id)
+                .unwrap();
+            let mut p_state = world
+                .get_mut::<PlayerState>(p_id)
+                .unwrap();
+            collision_player(
+                &mut *p_state,
+                &mut *p_transform,
+                &mut *p_motion,
+                correction,
+            )
         }
     }
 
     /* Render System */
-    for (_id, (transform, surface)) in world.query_mut::<(&Transform, &RenderStatic)>() {
-        system_render(transform, &surface.0, api, &camera_transform)
+    for (_id, (transform, surface)) in world
+        .query_mut::<(&Transform, &RenderStatic)>(
+        )
+    {
+        system_render(
+            transform,
+            &surface.0,
+            api,
+            &camera_transform,
+        )
     }
 
-    for (_id, (transform, player)) in world.query_mut::<(
-        &Transform,
-        Option<(&mut PlayerState, &StateRenderCb<PlayerState>)>,
-    )>() {
+    for (_id, (transform, player)) in world
+        .query_mut::<(
+            &Transform,
+            Option<(
+                &mut PlayerState,
+                &StateRenderCb<PlayerState>,
+            )>,
+        )>()
+    {
         if let Some(p) = player {
             system_render(
                 transform,
