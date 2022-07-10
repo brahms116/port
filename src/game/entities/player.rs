@@ -10,6 +10,7 @@ pub fn player_square() -> (
     StateMotionCb<PlayerState>,
     StateColliderCb<PlayerState>,
     UpdateStateCb<PlayerState>,
+    CollisionCb<CollisionBoxMarker>(collision_cb),
 ) {
     (
         Transform::default(),
@@ -20,6 +21,13 @@ pub fn player_square() -> (
         StateColliderCb(collider_cb),
         UpdateStateCb(update_state_cb),
     )
+}
+
+fn collision_cb(
+    id: Entity,
+    world: &mut World,
+    correction_vec: &Vec2,
+) {
 }
 
 fn render_cb(

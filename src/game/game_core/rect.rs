@@ -1,4 +1,5 @@
 use super::*;
+
 #[derive(Clone)]
 pub struct Rect {
     pub x1y1: Vec2,
@@ -28,10 +29,10 @@ impl Rect {
         let x = point.x;
         let y = point.y;
 
-        let in_x =
-            x2 > x && x1 < x || x1 > x && x2 < x;
-        let in_y =
-            y2 > y && y1 < y || y1 > y && y2 < y;
+        let in_x = x2 >= x && x1 <= x
+            || x1 >= x && x2 <= x;
+        let in_y = y2 >= y && y1 <= y
+            || y1 >= y && y2 <= y;
 
         in_x && in_y
     }

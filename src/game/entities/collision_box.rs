@@ -1,7 +1,11 @@
 use super::*;
 
-pub fn collision_box(
-) -> (Transform, RenderStatic, BoxCollider) {
+pub fn collision_box() -> (
+    Transform,
+    RenderStatic,
+    BoxCollider,
+    CollisionBoxMarker,
+) {
     let surfaces = vec![Surface {
         points: vec![
             Vec2::new(-8.0, 8.0),
@@ -23,5 +27,6 @@ pub fn collision_box(
             16.0,
             Vec2::default(),
         ),
+        CollisionBoxMarker(),
     )
 }
