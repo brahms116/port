@@ -22,7 +22,10 @@ pub fn main_loop<T: GameApi>(
     motion_system(world);
 
     /* Collision */
-    collision_system(world);
+    collision_system::<
+        CollisionBoxMarker,
+        PlayerState,
+    >(world);
 
     /* Render System */
 

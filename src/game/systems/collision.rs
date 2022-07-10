@@ -2,7 +2,7 @@ use super::*;
 
 pub fn collision_system<
     Static: StaticCollisionMarker + Send + Sync + 'static,
-    DynamicState,
+    DynamicState: Send + Sync + 'static,
 >(
     world: &mut World,
 ) {
@@ -13,41 +13,66 @@ pub fn collision_system<
             &Static,
         )>()
     {
+        /* We get the static box's collider rect */
         let static_box =
             collider.rect().apply(transform);
-        let mut player_id: Option<Entity> = None;
-        let mut correction: Option<Vec2> = None;
-        /* Player Collision */
+
+        // TODO store these as an Vec
+        let mut entity_id: Option<Entity> = None;
+        let mut correction_vec: Option<Vec2> =
+            None;
+
+        /* Then we check for all the instances of the given moving entity type and check for
+         * collisions */
         for (
-            p_id,
+            d_id,
             (
-                p_transform,
-                player,
-                p_collider,
-                p_motion,
+                d_transform,
+                d,
+                d_collider_cb,
+                d_motion,
             ),
         ) in &mut world.query::<(
             &Transform,
-            &PlayerState,
-            &StateColliderCb<PlayerState>,
+            &DynamicState,
+            &StateColliderCb<DynamicState>,
             &Motion,
         )>() {
-            let p_box = p_collider.0(player)
+            let d_box = d_collider_cb.0(d)
                 .rect()
-                .apply(p_transform);
+                .apply(d_transform);
             let res = Rect::check_collision(
                 &static_box,
-                &p_box,
-                p_motion.vel,
+                &d_box,
+                d_motion.vel,
             );
             if let Some(v) = res {
-                player_id = Some(p_id);
-                correction = Some(v);
+                entity_id = Some(d_id);
+                correction_vec = Some(v);
             }
+            //TODO store in vec and continue searching for all ids
             break;
         }
-        if let Some(p_id) = player_id {
-            let correction = correction.unwrap();
+
+        /* If there is a collision with this static box */
+        if entity_id.is_some()
+            && correction_vec.is_some()
+        {
+            let entity_id = entity_id.unwrap();
+            let correction_vec =
+                correction_vec.unwrap();
+            let cb =
+                world.get::<CollisionCb<
+                    Static,
+                    DynamicState,
+                >>(entity_id);
+            if let Ok(cb) = cb {
+                cb.0(
+                    entity_id,
+                    world,
+                    &correction_vec,
+                );
+            }
         }
     }
 }

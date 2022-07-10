@@ -26,7 +26,7 @@ pub struct CollisionCb<
     T: StaticCollisionMarker,
     K,
 >(
-    pub fn(Entity, &mut World, &Vec2),
+    pub fn(Entity, &World, &Vec2),
     std::marker::PhantomData<T>,
     std::marker::PhantomData<K>,
 );
@@ -35,7 +35,7 @@ impl<T: StaticCollisionMarker, K>
     CollisionCb<T, K>
 {
     pub fn new(
-        func: fn(Entity, &mut World, &Vec2),
+        func: fn(Entity, &World, &Vec2),
     ) -> Self {
         Self(func, std::marker::PhantomData::<T>::default(),
         std::marker::PhantomData::<K>::default())

@@ -26,7 +26,7 @@ pub fn player_square() -> (
 
 fn collision_cb(
     id: Entity,
-    world: &mut World,
+    world: &World,
     correction_vec: &Vec2,
 ) {
     let mut p_transform =
