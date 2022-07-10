@@ -1,4 +1,4 @@
-mod entity;
+mod entities;
 mod entity_animation;
 mod game_api;
 mod game_components;
@@ -7,12 +7,13 @@ mod main_loop;
 mod setup;
 mod systems;
 
-use crate::animation::*;
 pub use game_api::*;
+pub use game_core::*;
 
+use crate::animation::*;
+use entities::*;
 use entity_animation::*;
 use game_components::*;
-pub use game_core::*;
 use hecs::*;
 use main_loop::*;
 use setup::*;
