@@ -22,15 +22,22 @@ pub struct UpdateStateCb<State>(
     pub fn(&mut State),
 );
 
-pub struct CollisionCb<T>(
+pub struct CollisionCb<
+    T: StaticCollisionMarker,
+    K,
+>(
     pub fn(Entity, &mut World, &Vec2),
-    pub std::marker::PhantomData<T>,
+    std::marker::PhantomData<T>,
+    std::marker::PhantomData<K>,
 );
 
-impl<T> CollisionCb<T> {
+impl<T: StaticCollisionMarker, K>
+    CollisionCb<T, K>
+{
     pub fn new(
         func: fn(Entity, &mut World, &Vec2),
     ) -> Self {
-        Self(func, std::marker::PhantomData::<T>::default())
+        Self(func, std::marker::PhantomData::<T>::default(),
+        std::marker::PhantomData::<K>::default())
     }
 }

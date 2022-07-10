@@ -1,10 +1,19 @@
 use super::*;
 
-pub fn collision_system(world: &mut World) {
-    for (_id, (transform, collider)) in &mut world
-        .query::<(&Transform, &BoxCollider)>()
+pub fn collision_system<
+    Static: StaticCollisionMarker + Send + Sync + 'static,
+    DynamicState,
+>(
+    world: &mut World,
+) {
+    for (_id, (transform, collider, _marker)) in
+        &mut world.query::<(
+            &Transform,
+            &BoxCollider,
+            &Static,
+        )>()
     {
-        let collider_box =
+        let static_box =
             collider.rect().apply(transform);
         let mut player_id: Option<Entity> = None;
         let mut correction: Option<Vec2> = None;
@@ -27,7 +36,7 @@ pub fn collision_system(world: &mut World) {
                 .rect()
                 .apply(p_transform);
             let res = Rect::check_collision(
-                &collider_box,
+                &static_box,
                 &p_box,
                 p_motion.vel,
             );
@@ -39,21 +48,6 @@ pub fn collision_system(world: &mut World) {
         }
         if let Some(p_id) = player_id {
             let correction = correction.unwrap();
-            let mut p_transform = world
-                .get_mut::<Transform>(p_id)
-                .unwrap();
-            let mut p_motion = world
-                .get_mut::<Motion>(p_id)
-                .unwrap();
-            let mut p_state = world
-                .get_mut::<PlayerState>(p_id)
-                .unwrap();
-            collision_player(
-                &mut *p_state,
-                &mut *p_transform,
-                &mut *p_motion,
-                correction,
-            )
         }
     }
 }

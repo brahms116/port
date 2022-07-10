@@ -10,7 +10,7 @@ pub fn player_square() -> (
     StateMotionCb<PlayerState>,
     StateColliderCb<PlayerState>,
     UpdateStateCb<PlayerState>,
-    CollisionCb<CollisionBoxMarker>(collision_cb),
+    CollisionCb<CollisionBoxMarker, PlayerState>,
 ) {
     (
         Transform::default(),
@@ -20,6 +20,7 @@ pub fn player_square() -> (
         StateMotionCb(motion_cb),
         StateColliderCb(collider_cb),
         UpdateStateCb(update_state_cb),
+        CollisionCb::new(collision_cb),
     )
 }
 
@@ -28,6 +29,31 @@ fn collision_cb(
     world: &mut World,
     correction_vec: &Vec2,
 ) {
+    let mut p_transform =
+        world.get_mut::<Transform>(id).unwrap();
+    let mut p_motion =
+        world.get_mut::<Motion>(id).unwrap();
+    let mut p_state =
+        world.get_mut::<PlayerState>(id).unwrap();
+    collision_player(
+        &mut *p_state,
+        &mut *p_transform,
+        &mut *p_motion,
+        correction_vec,
+    )
+}
+fn collision_player(
+    state: &mut PlayerState,
+    transform: &mut Transform,
+    motion: &mut Motion,
+    correction_vec: &Vec2,
+) {
+    *state = PlayerState::post_motion(
+        PlayerDirection::Front,
+    );
+    motion.vel = Vec2::default();
+    motion.accel = Vec2::default();
+    transform.position += *correction_vec;
 }
 
 fn render_cb(
