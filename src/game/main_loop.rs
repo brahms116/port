@@ -1,6 +1,57 @@
 use super::*;
 use hecs::*;
 
+/* Helpers */
+
+pub fn update_entity_state<
+    T: 'static + Sync + Send,
+>(
+    world: &mut World,
+) {
+    for (_id, (state, cb)) in world
+        .query_mut::<(&mut T, &UpdateStateCb<T>)>(
+        )
+    {
+        cb.0(state)
+    }
+}
+
+pub fn update_entity_motion<
+    T: 'static + Sync + Send,
+>(
+    world: &mut World,
+) {
+    for (_id, (state, motion, transform, cb)) in
+        world.query_mut::<(
+            &mut T,
+            &mut Motion,
+            &mut Transform,
+            &StateMotionCb<T>,
+        )>()
+    {
+        cb.0(state, motion, transform);
+    }
+}
+
+fn render_entity_with_state<
+    T: 'static + Send + Sync,
+    K: GameApi,
+>(
+    api: &K,
+    world: &mut World,
+    camera_transform: &Transform,
+) {
+    for(_id,(state,transform,cb,)) in 
+        world.query_mut::<(
+            &T,
+            &Transform,
+            &StateRenderCb<T>
+        )>(){
+            system_render(transform,&cb.0(state,api.window_size()),api,camera_transform)
+        }
+}
+
+/* Main loop */
 pub fn main_loop<T: GameApi>(
     world: &mut World,
     api: &T,
@@ -10,27 +61,10 @@ pub fn main_loop<T: GameApi>(
         get_camera_transform(world);
 
     /* Entity States */
-    for (_id, (player, random)) in world.query_mut::<(Option<&mut PlayerState>, Option<()>)>() {
-        if let Some(n) = player {
-            n.update()
-        }
-    }
+    update_entity_state::<PlayerState>(world);
 
     /* Entity State Motion System */
-    for (_id, (transform, motion, player)) in
-        world.query_mut::<(
-            &mut Transform,
-            &mut Motion,
-            Option<(
-                &mut PlayerState,
-                &StateMotionCb<PlayerState>,
-            )>,
-        )>()
-    {
-        if let Some(p) = player {
-            p.1 .0(p.0, motion, transform)
-        }
-    }
+    update_entity_motion::<PlayerState>(world);
 
     /* Movement */
     for (_id, (motion, transform)) in world.query_mut::<(&mut Motion, Option<&mut Transform>)>() {
@@ -38,11 +72,11 @@ pub fn main_loop<T: GameApi>(
     }
 
     /* Collision */
-    for (id, (transform, collider)) in &mut world
+    for (_id, (transform, collider)) in &mut world
         .query::<(&Transform, &BoxCollider)>()
     {
-        let mut collider_box = collider.rect();
-        collider_box.apply(transform);
+        let collider_box =
+            collider.rect().apply(transform);
         let mut player_id: Option<Entity> = None;
         let mut correction: Option<Vec2> = None;
         /* Player Collision */
@@ -60,15 +94,14 @@ pub fn main_loop<T: GameApi>(
             &StateColliderCb<PlayerState>,
             &Motion,
         )>() {
-            let mut p_box =
-                p_collider.0(player).rect();
-            p_box.apply(p_transform);
+            let p_box = p_collider.0(player)
+                .rect()
+                .apply(p_transform);
             let res = Rect::check_collision(
                 &collider_box,
                 &p_box,
                 p_motion.vel,
             );
-            api.log(&format!("{:?}", res));
             if let Some(v) = res {
                 player_id = Some(p_id);
                 correction = Some(v);
@@ -108,24 +141,11 @@ pub fn main_loop<T: GameApi>(
         )
     }
 
-    for (_id, (transform, player)) in world
-        .query_mut::<(
-            &Transform,
-            Option<(
-                &mut PlayerState,
-                &StateRenderCb<PlayerState>,
-            )>,
-        )>()
-    {
-        if let Some(p) = player {
-            system_render(
-                transform,
-                &p.1 .0(p.0, api.window_size()),
-                api,
-                &camera_transform,
-            )
-        }
-    }
+    render_entity_with_state::<PlayerState, T>(
+        api,
+        world,
+        &camera_transform,
+    );
 
     /* Game Controller */
     for (_id, (frame_count, _stage_count)) in world.query_mut::<(&mut FrameCount, &StageCount)>() {

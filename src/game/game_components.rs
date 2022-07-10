@@ -9,14 +9,19 @@ pub struct FrameCount(pub u32);
 pub struct StageCount(pub u32);
 
 pub trait Transformable {
-    fn apply(&mut self, transform: &Transform);
+    fn apply(self, transform: &Transform)
+        -> Self;
 }
 
 impl Transformable for Rect {
     // TODO Apply rotation here
-    fn apply(&mut self, transform: &Transform) {
+    fn apply(
+        mut self,
+        transform: &Transform,
+    ) -> Self {
         self.x1y1 += transform.position;
         self.x2y2 += transform.position;
+        self
     }
 }
 
@@ -27,7 +32,10 @@ pub struct Transform {
 }
 
 impl Transform {
-    pub fn new(position: Vec2, rotation: f64) -> Self {
+    pub fn new(
+        position: Vec2,
+        rotation: f64,
+    ) -> Self {
         Self { position, rotation }
     }
 }
@@ -47,7 +55,11 @@ pub struct BoxCollider {
 }
 
 impl BoxCollider {
-    pub fn new(width: f64, height: f64, center: Vec2) -> Self {
+    pub fn new(
+        width: f64,
+        height: f64,
+        center: Vec2,
+    ) -> Self {
         Self {
             width,
             height,
@@ -65,15 +77,27 @@ impl BoxCollider {
     }
 }
 
-pub struct StateColliderCb<State>(pub fn(&State) -> BoxCollider);
+pub struct StateColliderCb<State>(
+    pub fn(&State) -> BoxCollider,
+);
 
 pub struct RenderStatic(pub Vec<Surface>);
 
-pub struct StateRenderCb<State>(pub fn(&State, &WindowSize) -> Vec<Surface>);
+pub struct StateRenderCb<State>(
+    pub fn(&State, &WindowSize) -> Vec<Surface>,
+);
 
-pub struct StateMotionCb<State>(pub fn(&mut State, &mut Motion, &mut Transform));
+pub struct StateMotionCb<State>(
+    pub  fn(
+        &mut State,
+        &mut Motion,
+        &mut Transform,
+    ),
+);
 
-// pub struct UpdateStateCb<State>(pub fn(&mut State));
+pub struct UpdateStateCb<State>(
+    pub fn(&mut State),
+);
 
 pub enum PlayerDirection {
     Front,
@@ -108,24 +132,37 @@ impl PlayerState {
             config: PlayerStateConfig::default(),
         }
     }
-    pub fn post_motion(dir: PlayerDirection) -> Self {
+    pub fn post_motion(
+        dir: PlayerDirection,
+    ) -> Self {
         let config = PlayerStateConfig::default();
         Self {
-            state: PlayerStateKind::PostMotion((Sequence::new(config.squish_duration), dir)),
+            state: PlayerStateKind::PostMotion((
+                Sequence::new(
+                    config.squish_duration,
+                ),
+                dir,
+            )),
             config,
         }
     }
     pub fn motion() -> Self {
         let config = PlayerStateConfig::default();
         Self {
-            state: PlayerStateKind::Motion(Sequence::new(config.squish_duration)),
+            state: PlayerStateKind::Motion(
+                Sequence::new(
+                    config.squish_duration,
+                ),
+            ),
             config,
         }
     }
 
     pub fn update(&mut self) {
         match &mut self.state {
-            PlayerStateKind::PostMotion(n) => n.0.advance_frame(),
+            PlayerStateKind::PostMotion(n) => {
+                n.0.advance_frame()
+            }
             PlayerStateKind::Motion(n) => {
                 n.advance_frame();
                 if n.poll() > 0.3 {

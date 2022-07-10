@@ -308,9 +308,6 @@ function getImports() {
         const ret = getObject(arg0).getElementById(getStringFromWasm0(arg1, arg2));
         return isLikeNone(ret) ? 0 : addHeapObject(ret);
     };
-    imports.wbg.__wbg_log_7761a8b8a8c1864e = function(arg0) {
-        console.log(getObject(arg0));
-    };
     imports.wbg.__wbg_instanceof_CanvasRenderingContext2d_9037c3eea625e27b = function(arg0) {
         const ret = getObject(arg0) instanceof CanvasRenderingContext2D;
         return ret;
@@ -386,8 +383,8 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper72 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 13, __wbg_adapter_18);
+    imports.wbg.__wbindgen_closure_wrapper66 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 12, __wbg_adapter_18);
         return addHeapObject(ret);
     };
 
