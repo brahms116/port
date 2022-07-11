@@ -25,6 +25,29 @@ impl Vec2 {
     pub fn mag(&self) -> f64 {
         (self.x.powi(2) + self.y.powi(2)).sqrt()
     }
+
+    pub fn rotate(
+        mut self,
+        radians: f64,
+    ) -> Self {
+        let x = self.x * radians.cos()
+            + self.y * -radians.sin();
+        let y = self.x * radians.sin()
+            + self.y * radians.cos();
+        self.x = x;
+        self.y = y;
+        self
+    }
+
+    pub fn rotate_deg(
+        self,
+        degrees: f64,
+    ) -> Self {
+        let radians = degrees
+            * std::f64::consts::PI
+            / 180.0;
+        self.rotate(radians)
+    }
 }
 
 impl ops::Neg for Vec2 {
@@ -157,4 +180,11 @@ impl Default for Vec2 {
     fn default() -> Self {
         Vec2::new(0.0, 0.0)
     }
+}
+
+#[test]
+fn should_rotate() {
+    let vec = Vec2::x()
+        .rotate(std::f64::consts::PI / 2.0);
+    assert_eq!(vec.y, 1.0);
 }

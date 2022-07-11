@@ -46,7 +46,7 @@ pub fn render<T: GameApi>(
         let points: Vec<Vec2> = surface
             .points
             .iter()
-            .map(|e| *e + transform.position)
+            .map(|e| e.apply(transform))
             .collect();
         /* Need to apply rotation */
         let points: Vec<Vec2> = points

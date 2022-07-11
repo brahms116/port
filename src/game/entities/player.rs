@@ -2,7 +2,10 @@ use super::*;
 type S = PlayerStateKind;
 type D = PlayerDirection;
 
-pub fn player_square() -> (
+pub fn player_square(
+    transform: Transform,
+    motion: Motion,
+) -> (
     Transform,
     Motion,
     PlayerState,
@@ -13,8 +16,8 @@ pub fn player_square() -> (
     CollisionCb<CollisionBoxMarker, PlayerState>,
 ) {
     (
-        Transform::default(),
-        Motion::default(),
+        transform,
+        motion,
         PlayerState::motion(),
         StateRenderCb(render_cb),
         StateMotionCb(motion_cb),
@@ -226,25 +229,33 @@ fn motion_cb(
             if n.0.checkpoint() == 0 {
                 n.0.advance_checkpoint();
                 if let D::Front = n.1 {
-                    //TODO need to rotate it to the transform's rotation
                     transform.position = transform
                         .position
                         + Vec2::new(0.0, offset)
+                            .rotate_deg(
+                                transform
+                                    .rotation,
+                            )
                 } else {
-                    //TODO need to rotate it to the transform's rotation
                     transform.position = transform
                         .position
                         + Vec2::new(0.0, -offset)
+                            .rotate_deg(
+                                transform
+                                    .rotation,
+                            )
                 }
             }
         }
         S::Motion(n) => {
             if n.checkpoint() == 0 {
                 n.advance_checkpoint();
-                //TODO need to rotate it to the transform's rotation
                 transform.position = transform
                     .position
                     + Vec2::new(0.0, offset)
+                        .rotate_deg(
+                            transform.rotation,
+                        )
             } else if n.checkpoint() == 2 {
                 n.advance_checkpoint();
                 if motion.vel.y
@@ -260,15 +271,19 @@ fn motion_cb(
                 }
             } else if n.checkpoint() == 3 {
                 if motion.vel.y
-                    >= state.config.max_travel_vel
+                    > state.config.max_travel_vel
                 {
-                    motion.accel = motion.accel
-                        - Vec2::new(
-                            0.0,
-                            state
-                                .config
-                                .travel_accel,
-                        )
+                    // motion.accel =
+                    //     Vec2::default();
+
+                    motion.vel.y = state
+                        .config
+                        .max_travel_vel;
+
+                    motion.accel -= Vec2::new(
+                        0.0,
+                        state.config.travel_accel,
+                    )
                 }
             }
         }
@@ -287,7 +302,9 @@ fn update_state_cb(state: &mut PlayerState) {
         S::PostMotion(n) => n.0.advance_frame(),
         S::Motion(n) => {
             n.advance_frame();
-            if n.poll() > 0.3 {
+            if n.poll() > 0.3
+                && n.checkpoint() < 2
+            {
                 n.advance_checkpoint();
             }
         }

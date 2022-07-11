@@ -29,10 +29,11 @@ pub fn update_motion(
 ) {
     motion.vel = motion.vel + motion.accel;
     motion.angular_vel += motion.angular_accel;
-    //TODO: apply rotation
-    //TODO: Apply new or old rotation?
+
     if let Some(t) = transform {
-        t.position = t.position + motion.vel;
         t.rotation += motion.angular_vel;
+        let true_vec =
+            motion.vel.rotate_deg(t.rotation);
+        t.position += true_vec;
     }
 }
