@@ -19,3 +19,14 @@ impl Transform {
         Self { position, rotation }
     }
 }
+
+impl Transformable for Transform {
+    fn apply(
+        mut self,
+        transform: &Transform,
+    ) -> Self {
+        self.rotation += transform.rotation;
+        self.position += transform.position;
+        self
+    }
+}

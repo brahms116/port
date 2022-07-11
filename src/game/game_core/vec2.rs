@@ -1,4 +1,6 @@
+use super::*;
 use std::ops;
+
 #[derive(Clone, Copy, Debug)]
 pub struct Vec2 {
     pub x: f64,
@@ -182,9 +184,14 @@ impl Default for Vec2 {
     }
 }
 
-#[test]
-fn should_rotate() {
-    let vec = Vec2::x()
-        .rotate(std::f64::consts::PI / 2.0);
-    assert_eq!(vec.y, 1.0);
+impl Transformable for Vec2 {
+    fn apply(
+        mut self,
+        transform: &Transform,
+    ) -> Self {
+        self =
+            self.rotate_deg(transform.rotation);
+        self += transform.position;
+        self
+    }
 }

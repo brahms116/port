@@ -14,7 +14,7 @@ pub struct PlayerStateConfig {
 impl Default for PlayerStateConfig {
     fn default() -> Self {
         Self {
-            max_travel_vel: 5.0,
+            max_travel_vel: 10.0,
             travel_accel: 0.5,
             squish_duration: 15,
         }

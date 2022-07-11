@@ -18,7 +18,7 @@ pub fn collision_box() -> (
 
     (
         Transform {
-            position: Vec2::new(0.0, 200.0),
+            position: Vec2::new(-200.0, 200.0),
             rotation: 0.0,
         },
         RenderStatic(surfaces),
