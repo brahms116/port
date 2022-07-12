@@ -166,7 +166,7 @@ fn render_cb(
                 ),
             ];
         }
-        S::Motion(n) => {
+        S::Motion(n) | S::Jump(n) => {
             let val = n.poll();
             let is_moved = n.checkpoint() == 1;
             let offset =
@@ -273,9 +273,6 @@ fn motion_cb(
                 if motion.vel.y
                     > state.config.max_travel_vel
                 {
-                    // motion.accel =
-                    //     Vec2::default();
-
                     motion.vel.y = state
                         .config
                         .max_travel_vel;
@@ -287,6 +284,17 @@ fn motion_cb(
                 }
             }
         }
+        S::Jump(n) => {
+            if n.checkpoint() == 0 {
+                n.advance_checkpoint();
+                transform.position = transform
+                    .position
+                    + Vec2::new(0.0, offset)
+                        .rotate_deg(
+                            transform.rotation,
+                        )
+            }
+        }
         _ => {}
     }
 }
@@ -294,19 +302,26 @@ fn motion_cb(
 fn collider_cb(
     state: &PlayerState,
 ) -> BoxCollider {
-    match state.state {
-        S::Still | S::PostMotion(_) => {
-            BoxCollider::new(
-                16.0,
-                16.0,
-                Vec2::default(),
-            )
+    let normal = BoxCollider::new(
+        16.0,
+        16.0,
+        Vec2::default(),
+    );
+
+    let moving = BoxCollider::new(
+        8.0,
+        20.0,
+        Vec2::default(),
+    );
+
+    match &state.state {
+        S::Still | S::PostMotion(_) => normal,
+        S::Jump(n) | S::Motion(n) => {
+            if n.is_complete() {
+                return moving;
+            }
+            return normal;
         }
-        _ => BoxCollider::new(
-            8.0,
-            20.0,
-            Vec2::default(),
-        ),
     }
 }
 

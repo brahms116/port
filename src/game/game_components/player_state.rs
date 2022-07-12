@@ -53,21 +53,6 @@ impl PlayerState {
             config,
         }
     }
-
-    pub fn update(&mut self) {
-        match &mut self.state {
-            PlayerStateKind::PostMotion(n) => {
-                n.0.advance_frame()
-            }
-            PlayerStateKind::Motion(n) => {
-                n.advance_frame();
-                if n.poll() > 0.3 {
-                    n.advance_checkpoint();
-                }
-            }
-            _ => {}
-        }
-    }
 }
 
 pub enum PlayerStateKind {
