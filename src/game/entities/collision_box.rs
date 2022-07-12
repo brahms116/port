@@ -1,6 +1,8 @@
 use super::*;
 
-pub fn collision_box() -> (
+pub fn collision_box(
+    transform: Transform,
+) -> (
     Transform,
     RenderStatic,
     BoxCollider,
@@ -17,10 +19,7 @@ pub fn collision_box() -> (
     }];
 
     (
-        Transform {
-            position: Vec2::new(-200.0, 200.0),
-            rotation: 0.0,
-        },
+        transform,
         RenderStatic(surfaces),
         BoxCollider::new(
             16.0,

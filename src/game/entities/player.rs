@@ -38,13 +38,6 @@ fn collision_cb(
         world.get_mut::<Motion>(id).unwrap();
     let mut p_state =
         world.get_mut::<PlayerState>(id).unwrap();
-    web_sys::console::log_1(
-        &format!(
-            "player transform before cb {:?}",
-            *p_transform
-        )
-        .into(),
-    );
     collision_player(
         &mut *p_state,
         &mut *p_transform,
@@ -64,13 +57,6 @@ fn collision_player(
     motion.vel = Vec2::default();
     motion.accel = Vec2::default();
     transform.position += *correction_vec;
-    web_sys::console::log_1(
-        &format!(
-            "player transform in cb {:?}",
-            *transform
-        )
-        .into(),
-    );
 }
 
 fn render_cb(
@@ -249,7 +235,7 @@ fn motion_cb(
                             .rotate_deg(
                                 transform
                                     .rotation,
-                            )
+                            );
                 } else {
                     transform.position = transform
                         .position

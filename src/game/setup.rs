@@ -10,5 +10,19 @@ pub fn setup(world: &mut World) {
         Transform::new(Vec2::default(), 45.0),
         Motion::default(),
     ));
-    world.spawn(collision_box());
+    world.spawn(collision_box(Transform::new(
+        Vec2::new(-200.0, 200.0),
+        0.0,
+    )));
+    world.spawn(collision_box(Transform::new(
+        Vec2::new(-400.0, 200.0),
+        0.0,
+    )));
+    world.spawn(player_square(
+        Transform::new(
+            Vec2::new(-400.0, 0.0),
+            0.0,
+        ),
+        Motion::default(),
+    ));
 }

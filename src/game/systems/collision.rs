@@ -41,9 +41,6 @@ pub fn collision_system<
             let d_box = d_collider_cb.0(d)
                 .rect()
                 .apply(d_transform);
-            web_sys::console::log_1(
-                &format!("Player transform picked up {:?}", d_box).into(),
-            );
             let res = Rect::check_collision(
                 &static_box,
                 &d_box,
@@ -54,9 +51,9 @@ pub fn collision_system<
             if let Some(v) = res {
                 entity_id = Some(d_id);
                 correction_vec = Some(v);
+                break;
             }
             //TODO store in vec and continue searching for all ids
-            break;
         }
 
         /* If there is a collision with this static box */
@@ -72,13 +69,6 @@ pub fn collision_system<
                     DynamicState,
                 >>(entity_id);
             if let Ok(cb) = cb {
-                web_sys::console::log_1(
-                    &format!(
-                        "correction vec passed in {:?}",
-                        correction_vec
-                    )
-                    .into(),
-                );
                 cb.0(
                     entity_id,
                     world,
