@@ -53,6 +53,17 @@ impl PlayerState {
             config,
         }
     }
+    pub fn jump() -> Self {
+        let config = PlayerStateConfig::default();
+        Self {
+            state: PlayerStateKind::Jump(
+                Sequence::new(
+                    config.squish_duration,
+                ),
+            ),
+            config,
+        }
+    }
 }
 
 pub enum PlayerStateKind {

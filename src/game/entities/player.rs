@@ -5,6 +5,7 @@ type D = PlayerDirection;
 pub fn player_square(
     transform: Transform,
     motion: Motion,
+    state: PlayerState,
 ) -> (
     Transform,
     Motion,
@@ -18,7 +19,7 @@ pub fn player_square(
     (
         transform,
         motion,
-        PlayerState::motion(),
+        state,
         StateRenderCb(render_cb),
         StateMotionCb(motion_cb),
         StateColliderCb(collider_cb),
@@ -51,9 +52,16 @@ fn collision_player(
     motion: &mut Motion,
     correction_vec: &Vec2,
 ) {
-    *state = PlayerState::post_motion(
-        PlayerDirection::Front,
-    );
+    let relative_correction = correction_vec
+        .rotate_deg(-transform.rotation);
+    let direction = if relative_correction.y < 0.0
+    {
+        D::Front
+    } else {
+        D::Back
+    };
+
+    *state = PlayerState::post_motion(direction);
     motion.vel = Vec2::default();
     motion.accel = Vec2::default();
     transform.position += *correction_vec;
@@ -293,6 +301,14 @@ fn motion_cb(
                         .rotate_deg(
                             transform.rotation,
                         )
+            } else if n.checkpoint() == 2 {
+                n.advance_checkpoint();
+                motion.vel = Vec2::new(
+                    0.0,
+                    state.config.max_travel_vel,
+                );
+                motion.accel =
+                    Vec2::new(0.0, -0.5);
             }
         }
         _ => {}
@@ -328,9 +344,9 @@ fn collider_cb(
 fn update_state_cb(state: &mut PlayerState) {
     match &mut state.state {
         S::PostMotion(n) => n.0.advance_frame(),
-        S::Motion(n) => {
+        S::Motion(n) | S::Jump(n) => {
             n.advance_frame();
-            if n.poll() > 0.3
+            if n.poll() > 0.5
                 && n.checkpoint() < 2
             {
                 n.advance_checkpoint();
