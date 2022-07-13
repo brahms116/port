@@ -3,6 +3,7 @@ use super::*;
 pub fn collision_box(
     transform: Transform,
 ) -> (
+    StoryBlocker,
     Transform,
     RenderStatic,
     BoxCollider,
@@ -19,6 +20,7 @@ pub fn collision_box(
     }];
 
     (
+        StoryBlocker(),
         transform,
         RenderStatic(surfaces),
         BoxCollider::new(

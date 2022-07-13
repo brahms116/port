@@ -7,6 +7,7 @@ pub fn player_square(
     motion: Motion,
     state: PlayerState,
 ) -> (
+    Player,
     Transform,
     Motion,
     PlayerState,
@@ -17,6 +18,7 @@ pub fn player_square(
     CollisionCb<CollisionBoxMarker, PlayerState>,
 ) {
     (
+        Player(),
         transform,
         motion,
         state,

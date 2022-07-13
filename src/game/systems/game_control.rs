@@ -15,7 +15,17 @@ fn get_player_entity(
     world: &World,
 ) -> Option<Entity> {
     world
-        .query::<(&PlayerState,)>()
+        .query::<(&Player,)>()
+        .into_iter()
+        .next()
+        .map(|e| e.0)
+}
+
+fn get_blocker_entity(
+    world: &World,
+) -> Option<Entity> {
+    world
+        .query::<(&StoryBlocker,)>()
         .into_iter()
         .next()
         .map(|e| e.0)
@@ -23,7 +33,7 @@ fn get_player_entity(
 
 pub fn controller(
     world: &mut World,
-    _api: &impl GameApi,
+    api: &impl GameApi,
 ) {
     type P = Progression;
 
@@ -42,6 +52,27 @@ pub fn controller(
     let progress = controller.progress.clone();
 
     match progress {
+        P::BounceTimerStart
+        | P::BounceTimerWait => {
+            let player = get_player_entity(world)
+                .expect("player expected");
+            let mut p_transform = world
+                .get_mut::<Transform>(player)
+                .unwrap();
+            let b_box = get_blocker_entity(world)
+                .expect("blocker expected");
+            let mut b_transform = world
+                .get_mut::<Transform>(b_box)
+                .unwrap();
+            let width =
+                api.window_size().w as f64;
+
+            let half_width = width / 2.0;
+            let offset = half_width * 0.6;
+
+            p_transform.position.x = -offset;
+            b_transform.position.x = -offset;
+        }
         _ => {}
     }
 
