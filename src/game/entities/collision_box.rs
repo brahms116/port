@@ -1,6 +1,6 @@
 use super::*;
 
-pub fn collision_box(
+pub fn story_blocker(
     transform: Transform,
 ) -> (
     StoryBlocker,

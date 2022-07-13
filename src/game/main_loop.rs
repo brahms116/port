@@ -16,9 +16,13 @@ pub fn main_loop<T: GameApi>(
     update_entity_state_system::<PlayerState>(
         world,
     );
+    update_entity_state_system::<TrackState>(
+        world,
+    );
 
     /* Entity State Motion System */
     entity_motion_system::<PlayerState>(world);
+    entity_motion_system::<TrackState>(world);
 
     /* Movement */
     motion_system(world);
@@ -34,6 +38,12 @@ pub fn main_loop<T: GameApi>(
     render_static_system(
         world,
         api,
+        &camera_transform,
+    );
+
+    render_system::<TrackState, T>(
+        api,
+        world,
         &camera_transform,
     );
 
