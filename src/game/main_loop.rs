@@ -10,6 +10,8 @@ pub fn main_loop<T: GameApi>(
     let camera_transform =
         get_camera_transform(world);
 
+    controller(world, api);
+
     /* Entity States */
     update_entity_state_system::<PlayerState>(
         world,
@@ -40,7 +42,4 @@ pub fn main_loop<T: GameApi>(
         world,
         &camera_transform,
     );
-
-    /* Game Controller */
-    update_game_controller(world);
 }

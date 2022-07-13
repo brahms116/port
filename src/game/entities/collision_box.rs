@@ -15,7 +15,7 @@ pub fn collision_box(
             Vec2::new(8.0, -8.0),
             Vec2::new(-8.0, -8.0),
         ],
-        color: RGBA::new(255, 0, 0, 1.0),
+        color: RGBA::new(255, 0, 0, 0.0),
     }];
 
     (

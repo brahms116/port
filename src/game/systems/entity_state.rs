@@ -1,5 +1,4 @@
 use super::*;
-
 pub fn update_entity_state_system<
     T: 'static + Sync + Send,
 >(

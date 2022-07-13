@@ -343,7 +343,13 @@ fn collider_cb(
 
 fn update_state_cb(state: &mut PlayerState) {
     match &mut state.state {
-        S::PostMotion(n) => n.0.advance_frame(),
+        S::PostMotion(n) => {
+            if n.0.is_complete() {
+                *state = PlayerState::still();
+            } else {
+                n.0.advance_frame();
+            }
+        }
         S::Motion(n) | S::Jump(n) => {
             n.advance_frame();
             if n.poll() > 0.5
