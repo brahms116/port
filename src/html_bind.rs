@@ -199,7 +199,21 @@ impl GameApi for HTMLApi {
         _opacity: u32,
         _id: &str,
     ) {
-        todo!()
+        let style = web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .get_element_by_id(_id)
+            .unwrap()
+            .dyn_into::<web_sys::HtmlElement>()
+            .unwrap()
+            .style();
+        style
+            .set_property(
+                "font-size",
+                &format!("{}px", _opacity),
+            )
+            .unwrap();
     }
 
     fn inputs(&self) -> &MouseInput {

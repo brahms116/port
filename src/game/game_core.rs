@@ -1,11 +1,8 @@
-mod rect;
-mod rgb;
-mod surface;
-mod transform;
-mod vec2;
+mod components;
+mod systems;
 
-pub use rect::*;
-pub use rgb::*;
-pub use surface::*;
-pub use transform::*;
-pub use vec2::*;
+use super::game_api::*;
+use hecs::*;
+
+pub use components::*;
+pub use systems::*;
