@@ -1,39 +1,20 @@
 use super::*;
 
-pub fn render_static_system<T: GameApi>(
-    world: &mut World,
-    api: &T,
-    camera_transform: &Transform,
-) {
-    for (_id, (transform, surface)) in world
-        .query_mut::<(&Transform, &RenderStatic)>(
-        )
+pub fn system_render<T: GameApi>(world: &World, api: &T) {
+    let camera_transfrom =
+        get_camera_transform(world).unwrap_or_default();
+    for (_id, (transform, render_surface, opacity)) in &mut world
+        .query::<(&Transform, &Render, Option<&Opacity>)>()
     {
-        render(
-            transform,
-            &surface.0,
-            api,
-            &camera_transform,
-        )
-    }
-}
-
-pub fn render_system<
-    T: 'static + Send + Sync,
-    K: GameApi,
->(
-    api: &K,
-    world: &mut World,
-    camera_transform: &Transform,
-) {
-    for(_id,(state,transform,cb,)) in 
-        world.query_mut::<(
-            &T,
-            &Transform,
-            &StateRenderCb<T>
-        )>(){
-            render(transform,&cb.0(state,api.window_size()),api,camera_transform)
+        let mut surfaces = render_surface.0.clone();
+        if let Some(o) = opacity {
+            for surface in &mut surfaces {
+                surface.color.a *= o.0;
+            }
         }
+
+        render(transform, &surfaces, api, &camera_transfrom);
+    }
 }
 
 pub fn render<T: GameApi>(

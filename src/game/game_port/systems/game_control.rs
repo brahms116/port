@@ -1,14 +1,5 @@
 use super::*;
 
-pub fn get_camera_transform(world: &World) -> Transform {
-    for (_id, (_cam, pos)) in
-        &mut world.query::<(&Camera, &Transform)>()
-    {
-        return pos.clone();
-    }
-    return Transform::default();
-}
-
 fn get_player_entity(world: &World) -> Option<Entity> {
     world
         .query::<(&Player,)>()

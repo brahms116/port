@@ -1,21 +1,31 @@
 mod box_collider;
+mod camera;
 mod cbs;
 mod collision_markers;
+mod height;
 mod motion;
+mod opacity;
 mod rect;
+mod render;
 mod rgb;
 mod surface;
 mod transform;
 mod vec2;
+mod width;
 
 use super::*;
 
 pub use box_collider::*;
+pub use camera::*;
 pub use cbs::*;
 pub use collision_markers::*;
+pub use height::*;
 pub use motion::*;
+pub use opacity::*;
 pub use rect::*;
+pub use render::*;
 pub use rgb::*;
 pub use surface::*;
 pub use transform::*;
 pub use vec2::*;
+pub use width::*;

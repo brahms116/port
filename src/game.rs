@@ -1,4 +1,3 @@
-mod entities;
 mod game_api;
 mod game_core;
 mod game_port;
@@ -8,7 +7,6 @@ mod setup;
 pub use game_api::*;
 pub use game_core::*;
 
-use entities::*;
 use game_port::*;
 use hecs::*;
 use main_loop::*;
