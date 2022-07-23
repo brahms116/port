@@ -1,20 +1,27 @@
 use super::*;
 
+const PLAYER_HEIGHT: f64 = 16.0;
+const PLAYER_WIDTH: f64 = 16.0;
+const PLAYER_COLOR: RGBA = RGBA {
+    r: 0,
+    g: 0,
+    b: 0,
+    a: 1.0,
+};
+
 pub fn create_player_square(
     transform: Transform,
-) -> (Transform, Render) {
-    let (vec1, vec2, vec3, vec4) = Rect::two_point_flat(
-        Vec2::default(),
-        Vec2::new(16.0, 16.0),
-    )
-    .corners();
-
-    let points = vec![vec1, vec2, vec3, vec4];
-
+) -> (Transform, Render, Height, Width, Rectangle, Player) {
     let surface = Surface {
-        points,
-        color: RGBA::new(0, 0, 0, 1.0),
+        points: vec![],
+        color: PLAYER_COLOR,
     };
-
-    (transform, Render(vec![surface]))
+    (
+        transform,
+        Render(vec![surface]),
+        Height(PLAYER_HEIGHT),
+        Width(PLAYER_WIDTH),
+        Rectangle(),
+        Player(),
+    )
 }
