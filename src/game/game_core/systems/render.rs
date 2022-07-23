@@ -3,9 +3,15 @@ use super::*;
 pub fn system_render<T: GameApi>(world: &World, api: &T) {
     let camera_transfrom =
         get_camera_transform(world).unwrap_or_default();
-    for (_id, (transform, render_surface, opacity)) in &mut world
-        .query::<(&Transform, &Render, Option<&Opacity>)>()
-    {
+    for (
+        _id,
+        (transform, render_surface, opacity, offset),
+    ) in &mut world.query::<(
+        &Transform,
+        &Render,
+        Option<&Opacity>,
+        Option<&RenderOffset>,
+    )>() {
         let mut surfaces = render_surface.0.clone();
         if let Some(o) = opacity {
             for surface in &mut surfaces {
@@ -13,7 +19,18 @@ pub fn system_render<T: GameApi>(world: &World, api: &T) {
             }
         }
 
-        render(transform, &surfaces, api, &camera_transfrom);
+        let mut transform = transform.clone();
+
+        if let Some(offset) = offset {
+            transform.position += offset.0
+        }
+
+        render(
+            &transform,
+            &surfaces,
+            api,
+            &camera_transfrom,
+        );
     }
 }
 
