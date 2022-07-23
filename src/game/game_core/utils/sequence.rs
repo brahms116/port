@@ -21,21 +21,19 @@ impl Sequence {
     }
 }
 
-impl Animation for Sequence {
-    fn duration(&self) -> u32 {
-        self.engine.duration()
+impl HasLinearProgress for Sequence {
+    fn get_progress(&self) -> &LinearProgress {
+        &self.engine
     }
 
+    fn get_progress_mut(&mut self) -> &mut LinearProgress {
+        &mut self.engine
+    }
+}
+
+impl Animation for Sequence {
     fn advance_frame(&mut self) {
         self.engine.advance_frame()
-    }
-
-    fn is_complete(&self) -> bool {
-        self.engine.is_complete()
-    }
-
-    fn poll(&self) -> f64 {
-        self.engine.poll()
     }
 
     fn reset(&mut self) {
