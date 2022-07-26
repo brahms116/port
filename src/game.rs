@@ -1,25 +1,18 @@
-mod entities;
-mod entity_animation;
 mod game_api;
-mod game_components;
 mod game_core;
+mod game_port;
 mod main_loop;
 mod setup;
-mod systems;
 
 pub use game_api::*;
 pub use game_core::*;
 
-use crate::animation::*;
-use entities::*;
-use entity_animation::*;
-use game_components::*;
+use game_port::*;
 use hecs::*;
 use main_loop::*;
 use setup::*;
 use std::cell::RefCell;
 use std::rc::Rc;
-use systems::*;
 pub struct Game {
     world: Rc<RefCell<World>>,
 }

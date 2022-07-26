@@ -1,10 +1,9 @@
 mod components;
+mod entities;
 mod systems;
-mod utils;
 
-use super::game_api::*;
-use hecs::*;
+use super::*;
 
 pub use components::*;
+pub use entities::*;
 pub use systems::*;
-pub use utils::*;

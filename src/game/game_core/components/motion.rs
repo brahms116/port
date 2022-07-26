@@ -6,5 +6,3 @@ pub struct Motion {
     pub angular_vel: f64,
     pub angular_accel: f64,
 }
-
-

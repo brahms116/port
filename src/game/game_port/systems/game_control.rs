@@ -1,19 +1,6 @@
 use super::*;
 
-pub fn get_camera_transform(
-    world: &World,
-) -> Transform {
-    for (_id, (_cam, pos)) in &mut world
-        .query::<(&Camera, &Transform)>()
-    {
-        return pos.clone();
-    }
-    return Transform::default();
-}
-
-fn get_player_entity(
-    world: &World,
-) -> Option<Entity> {
+fn get_player_entity(world: &World) -> Option<Entity> {
     world
         .query::<(&Player,)>()
         .into_iter()
@@ -21,9 +8,7 @@ fn get_player_entity(
         .map(|e| e.0)
 }
 
-fn get_blocker_entity(
-    world: &World,
-) -> Option<Entity> {
+fn get_blocker_entity(world: &World) -> Option<Entity> {
     world
         .query::<(&StoryBlocker,)>()
         .into_iter()
@@ -31,10 +16,7 @@ fn get_blocker_entity(
         .map(|e| e.0)
 }
 
-pub fn controller(
-    world: &mut World,
-    api: &impl GameApi,
-) {
+pub fn controller(world: &mut World, api: &impl GameApi) {
     type P = Progression;
 
     let controller: Entity = world
@@ -44,28 +26,23 @@ pub fn controller(
         .map(|e| e.0)
         .expect("controller expected");
 
-    let mut controller = world
-        .get_mut::<Controller>(controller)
-        .unwrap();
+    let mut controller =
+        world.get_mut::<Controller>(controller).unwrap();
 
     controller.timer.advance_frame();
     let progress = controller.progress.clone();
 
     match progress {
-        P::BounceTimerStart
-        | P::BounceTimerWait => {
+        P::BounceTimerStart | P::BounceTimerWait => {
             let player = get_player_entity(world)
                 .expect("player expected");
-            let mut p_transform = world
-                .get_mut::<Transform>(player)
-                .unwrap();
+            let mut p_transform =
+                world.get_mut::<Transform>(player).unwrap();
             let b_box = get_blocker_entity(world)
                 .expect("blocker expected");
-            let mut b_transform = world
-                .get_mut::<Transform>(b_box)
-                .unwrap();
-            let width =
-                api.window_size().w as f64;
+            let mut b_transform =
+                world.get_mut::<Transform>(b_box).unwrap();
+            let width = api.window_size().w as f64;
 
             let half_width = width / 2.0;
             let offset = half_width * 0.6;
@@ -83,11 +60,8 @@ pub fn controller(
             .get_mut::<PlayerState>(player)
             .expect("player state expected");
 
-        if let PlayerStateKind::Still =
-            player.state
-        {
-            controller.timer =
-                LinearAnimation::new(50);
+        if let PlayerStateKind::Still = player.state {
+            controller.timer = LinearProgress::new(50);
             controller.progress =
                 Progression::BounceTimerWait;
         }
@@ -98,9 +72,7 @@ pub fn controller(
             .get_mut::<PlayerState>(player)
             .expect("player state expected");
 
-        if let PlayerStateKind::Still =
-            player.state
-        {
+        if let PlayerStateKind::Still = player.state {
             if controller.timer.is_complete() {
                 *player = PlayerState::jump();
                 controller.progress =

@@ -68,7 +68,9 @@ impl GameRunner<HTMLApi> {
         let window = web_sys::window().unwrap();
         let window2 = web_sys::window().unwrap();
 
-        let h = Rc::new(RefCell::<Option<Closure<dyn FnMut()>>>::new(None));
+        let h = Rc::new(RefCell::<
+            Option<Closure<dyn FnMut()>>,
+        >::new(None));
         let g = Rc::clone(&h);
         let api = Rc::clone(&self.api);
         let cls = Closure::wrap(Box::new(move || {
@@ -76,12 +78,25 @@ impl GameRunner<HTMLApi> {
             api.update();
             f(&api);
             window
-                .request_animation_frame(h.borrow().as_ref().unwrap().as_ref().unchecked_ref())
+                .request_animation_frame(
+                    h.borrow()
+                        .as_ref()
+                        .unwrap()
+                        .as_ref()
+                        .unchecked_ref(),
+                )
                 .unwrap();
-        }) as Box<dyn FnMut()>);
+        })
+            as Box<dyn FnMut()>);
         *g.borrow_mut() = Some(cls);
         window2
-            .request_animation_frame(g.borrow().as_ref().unwrap().as_ref().unchecked_ref())
+            .request_animation_frame(
+                g.borrow()
+                    .as_ref()
+                    .unwrap()
+                    .as_ref()
+                    .unchecked_ref(),
+            )
             .unwrap();
     }
 }
@@ -115,33 +130,90 @@ impl GameApi for HTMLApi {
     fn draw_surface(&self, surface: Surface) {
         if surface.points.len() > 0 {
             self.canvas.ctx.begin_path();
-            self.canvas
-                .ctx
-                .set_fill_style(&surface.color.to_string().into());
+            self.canvas.ctx.set_fill_style(
+                &surface.color.to_string().into(),
+            );
             let start = &surface.points[0];
             self.canvas.ctx.move_to(start.x, start.y);
-            for (i, v) in surface.points.iter().enumerate() {
+            for (i, v) in surface.points.iter().enumerate()
+            {
                 if i != 0 {
                     self.canvas.ctx.line_to(v.x, v.y);
                 }
                 if i == surface.points.len() - 1 {
-                    self.canvas.ctx.line_to(start.x, start.y);
+                    self.canvas
+                        .ctx
+                        .line_to(start.x, start.y);
                     self.canvas.ctx.fill();
                 }
             }
         }
     }
 
-    fn set_element_position(&self, _point: Vec2, _id: &str) {
-        todo!()
+    fn set_element_position(
+        &self,
+        _point: Vec2,
+        _id: &str,
+    ) {
+        let style = web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .get_element_by_id(_id)
+            .unwrap()
+            .dyn_into::<web_sys::HtmlElement>()
+            .unwrap()
+            .style();
+
+        style
+            .set_property("top", &format!("{}px", _point.y))
+            .unwrap();
+        style
+            .set_property(
+                "left",
+                &format!("{}px", _point.x),
+            )
+            .unwrap();
     }
 
     fn resize_element(&self, _size: u32, _id: &str) {
-        todo!()
+        let style = web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .get_element_by_id(_id)
+            .unwrap()
+            .dyn_into::<web_sys::HtmlElement>()
+            .unwrap()
+            .style();
+        style
+            .set_property(
+                "font-size",
+                &format!("{}px", _size),
+            )
+            .unwrap();
     }
 
-    fn set_element_opacity(&self, _opacity: u32, _id: &str) {
-        todo!()
+    fn set_element_opacity(
+        &self,
+        _opacity: u32,
+        _id: &str,
+    ) {
+        let style = web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .get_element_by_id(_id)
+            .unwrap()
+            .dyn_into::<web_sys::HtmlElement>()
+            .unwrap()
+            .style();
+        style
+            .set_property(
+                "font-size",
+                &format!("{}px", _opacity),
+            )
+            .unwrap();
     }
 
     fn inputs(&self) -> &MouseInput {

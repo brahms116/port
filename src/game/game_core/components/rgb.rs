@@ -20,12 +20,7 @@ impl std::fmt::Display for RGBA {
 }
 
 impl RGBA {
-    pub fn new(
-        r: u32,
-        g: u32,
-        b: u32,
-        a: f64,
-    ) -> RGBA {
+    pub fn new(r: u32, g: u32, b: u32, a: f64) -> RGBA {
         RGBA { r, g, b, a }
     }
 }
