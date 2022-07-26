@@ -1,12 +1,10 @@
 use super::*;
 
-pub fn entity_motion_system<
-    T: 'static + Sync + Send,
->(
+pub fn entity_motion_system<T: 'static + Sync + Send>(
     world: &mut World,
 ) {
-    for (_id, (state, motion, transform, cb)) in
-        world.query_mut::<(
+    for (_id, (state, motion, transform, cb)) in world
+        .query_mut::<(
             &mut T,
             &mut Motion,
             &mut Transform,
@@ -17,8 +15,14 @@ pub fn entity_motion_system<
     }
 }
 
-pub fn motion_system(world: &mut World) {
-    for (_id, (motion, transform)) in world.query_mut::<(&mut Motion, Option<&mut Transform>)>() {
+pub fn system_motion<T: GameApi>(
+    world: &mut World,
+    _api: &T,
+) {
+    for (_id, (motion, transform)) in world
+        .query_mut::<(&mut Motion, Option<&mut Transform>)>(
+        )
+    {
         update_motion(motion, transform)
     }
 }
@@ -32,8 +36,7 @@ pub fn update_motion(
 
     if let Some(t) = transform {
         t.rotation += motion.angular_vel;
-        let true_vec =
-            motion.vel.rotate_deg(t.rotation);
+        let true_vec = motion.vel.rotate_deg(t.rotation);
         t.position += true_vec;
     }
 }

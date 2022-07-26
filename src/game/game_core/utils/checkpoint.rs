@@ -11,4 +11,8 @@ impl Checkpoint {
     pub fn checkpoint(&self) -> u32 {
         self.0
     }
+
+    pub fn reset(&mut self) {
+        self.0 = 0;
+    }
 }

@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use super::*;
 
 const PLAYER_HEIGHT: f64 = 16.0;
@@ -21,11 +23,44 @@ pub fn create_player_square(
     Opacity,
     RenderOffset,
     FadeAnimation,
+    Motion,
+    Movement,
 ) {
     let surface = Surface {
         points: vec![],
         color: PLAYER_COLOR,
     };
+
+    let mut hash =
+        HashMap::<MovementDirection, TravelConfig>::new();
+    hash.insert(
+        MovementDirection::Front,
+        TravelConfig {
+            max_vel: 5.0,
+            travel_accel: 0.3,
+        },
+    );
+    hash.insert(
+        MovementDirection::Back,
+        TravelConfig {
+            max_vel: 5.0,
+            travel_accel: 0.3,
+        },
+    );
+    hash.insert(
+        MovementDirection::Left,
+        TravelConfig {
+            max_vel: 5.0,
+            travel_accel: 0.3,
+        },
+    );
+    hash.insert(
+        MovementDirection::Right,
+        TravelConfig {
+            max_vel: 5.0,
+            travel_accel: 0.3,
+        },
+    );
     (
         transform,
         Render(vec![surface]),
@@ -39,6 +74,12 @@ pub fn create_player_square(
             animation_type: FadeAnimationType::In,
             engine: LinearProgress::new(100),
             is_active: true,
+        },
+        Motion::default(),
+        Movement {
+            settings: TravelSettings(hash),
+            direction: MovementDirection::Back,
+            applied_accel: 0.0,
         },
     )
 }
