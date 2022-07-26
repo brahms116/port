@@ -78,7 +78,7 @@ pub fn create_player_square(
         Motion::default(),
         Movement {
             settings: TravelSettings(hash),
-            direction: MovementDirection::Back,
+            direction: MovementDirection::Idle,
             applied_accel: 0.0,
         },
     )

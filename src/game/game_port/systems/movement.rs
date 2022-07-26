@@ -28,16 +28,11 @@ pub fn system_movement<T: GameApi>(
             MovementDirection::Left => -motion.vel.x,
             MovementDirection::Right => motion.vel.x,
         };
-        _api.log(&format!(
-            "current speed {}",
-            current_speed
-        ));
         let mut speed_diff = desired_speed - current_speed;
 
         if speed_diff < 0.1 {
             speed_diff = 0.0;
         }
-        _api.log(&format!("speed_diff {}", speed_diff));
 
         let mut ratio = 0.0;
         if desired_speed != 0.0 {
@@ -46,19 +41,10 @@ pub fn system_movement<T: GameApi>(
         if ratio < 0.0 {
             ratio = 0.0
         }
-        _api.log(&format!("ratio {}", ratio));
         let accel = travel_accel * ratio;
-        _api.log(&format!("new desired accel {}", accel));
-        _api.log(&format!(
-            "applied {}",
-            movt.applied_accel
-        ));
 
         let apply_accel = accel - movt.applied_accel;
         movt.applied_accel = accel;
-
-        _api.log(&format!("will apply {}", apply_accel));
-
         match d {
             MovementDirection::Front => {
                 motion.accel.y += apply_accel
