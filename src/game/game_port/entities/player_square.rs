@@ -20,6 +20,7 @@ pub fn create_player_square(
     Player,
     Opacity,
     RenderOffset,
+    FadeAnimation,
 ) {
     let surface = Surface {
         points: vec![],
@@ -34,5 +35,10 @@ pub fn create_player_square(
         Player(),
         Opacity(1.0),
         RenderOffset(Vec2::default()),
+        FadeAnimation {
+            animation_type: FadeAnimationType::In,
+            engine: LinearProgress::new(100),
+            is_active: true,
+        },
     )
 }
