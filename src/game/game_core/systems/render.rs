@@ -22,6 +22,7 @@ pub fn system_render<T: GameApi>(world: &World, api: &T) {
         let mut transform = transform.clone();
 
         if let Some(offset) = offset {
+            api.log(&format!("{:?}", offset.0));
             transform.position += offset.0
         }
 

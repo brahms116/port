@@ -2,8 +2,8 @@ use std::collections::HashMap;
 
 use super::*;
 
-const PLAYER_HEIGHT: f64 = 16.0;
-const PLAYER_WIDTH: f64 = 16.0;
+const PLAYER_HEIGHT: f64 = 12.0;
+const PLAYER_WIDTH: f64 = 12.0;
 const PLAYER_COLOR: RGBA = RGBA {
     r: 0,
     g: 0,
@@ -25,6 +25,7 @@ pub fn create_player_square(
     FadeAnimation,
     Motion,
     Movement,
+    SquishAnimation,
 ) {
     let surface = Surface {
         points: vec![],
@@ -72,7 +73,7 @@ pub fn create_player_square(
         RenderOffset(Vec2::default()),
         FadeAnimation {
             animation_type: FadeAnimationType::In,
-            engine: LinearProgress::new(100),
+            engine: LinearProgress::new(50),
             is_active: true,
         },
         Motion::default(),
@@ -80,6 +81,20 @@ pub fn create_player_square(
             settings: TravelSettings(hash),
             direction: MovementDirection::Idle,
             applied_accel: 0.0,
+        },
+        SquishAnimation {
+            direction: SquishDirection::Front,
+            config: SquishConfig {
+                start_height: PLAYER_HEIGHT,
+                start_width: PLAYER_WIDTH,
+                squish_height: 2.0,
+                squish_width: 100.0,
+                finish_height: PLAYER_WIDTH,
+                finish_width: PLAYER_WIDTH,
+                should_anchor: true,
+            },
+            engine: LinearProgress::new(30),
+            is_active: true,
         },
     )
 }

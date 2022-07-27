@@ -6,6 +6,7 @@ mod globals;
 mod movement;
 mod player_state;
 mod rectangle;
+mod squish;
 
 pub use controller::*;
 pub use fade_animation::*;
@@ -13,3 +14,4 @@ pub use globals::*;
 pub use movement::*;
 pub use player_state::*;
 pub use rectangle::*;
+pub use squish::*;
