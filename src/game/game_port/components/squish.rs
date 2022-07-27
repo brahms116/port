@@ -1,5 +1,6 @@
 use super::*;
 
+#[derive(Default)]
 pub struct SquishConfig {
     pub start_height: f64,
     pub start_width: f64,
