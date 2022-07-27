@@ -8,18 +8,36 @@ pub fn system_movement<T: GameApi>(
         world.query_mut::<(&mut Movement, &mut Motion)>()
     {
         let d = &movt.direction;
-        let travel_accel = movt
-            .settings
-            .0
-            .get(&d)
-            .map(|e| e.travel_accel)
-            .unwrap_or(0.0);
-        let desired_speed = movt
-            .settings
-            .0
-            .get(&d)
-            .map(|e| e.max_vel)
-            .unwrap_or(0.0);
+        let travel_accel = match d {
+            MovementDirection::Front => {
+                movt.settings.front.travel_accel
+            }
+            MovementDirection::Idle => 0.0,
+            MovementDirection::Back => {
+                movt.settings.back.travel_accel
+            }
+            MovementDirection::Left => {
+                movt.settings.left.travel_accel
+            }
+            MovementDirection::Right => {
+                movt.settings.left.travel_accel
+            }
+        };
+        let desired_speed = match d {
+            MovementDirection::Front => {
+                movt.settings.front.max_vel
+            }
+            MovementDirection::Idle => 0.0,
+            MovementDirection::Back => {
+                movt.settings.back.max_vel
+            }
+            MovementDirection::Left => {
+                movt.settings.left.max_vel
+            }
+            MovementDirection::Right => {
+                movt.settings.left.max_vel
+            }
+        };
 
         let current_speed = match d {
             MovementDirection::Idle => 0.0,

@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use super::*;
 
 pub const PLAYER_HEIGHT: f64 = 12.0;

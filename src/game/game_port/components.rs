@@ -7,6 +7,7 @@ mod movement;
 mod player_state;
 mod rectangle;
 mod squish;
+mod squish_movt;
 
 pub use controller::*;
 pub use fade_animation::*;
@@ -15,3 +16,4 @@ pub use movement::*;
 pub use player_state::*;
 pub use rectangle::*;
 pub use squish::*;
+pub use squish_movt::*;
