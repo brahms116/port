@@ -54,9 +54,9 @@ pub struct GameRunner<Api> {
 
 impl<Api: 'static> GameRunner<Api> {
     pub fn new(api: Api) -> GameRunner<Api> {
-        GameRunner {
-            api: Rc::new(RefCell::new(api)),
-        }
+        let my_api = Rc::new(RefCell::new(api));
+
+        GameRunner { api: my_api }
     }
 }
 
@@ -67,6 +67,70 @@ impl GameRunner<HTMLApi> {
     {
         let window = web_sys::window().unwrap();
         let window2 = web_sys::window().unwrap();
+
+        {
+            let api = self.api.clone();
+            let window = web_sys::window().unwrap();
+            let closure = Closure::<dyn FnMut(_)>::new(
+                move |event: web_sys::MouseEvent| {
+                    let height = window
+                        .inner_height()
+                        .unwrap()
+                        .as_f64()
+                        .unwrap();
+                    let mut api = api.borrow_mut();
+                    let x = event.offset_x() as f64;
+                    let y =
+                        height - event.offset_y() as f64;
+                    let vec = Vec2::new(x, y);
+                    api.mouse_input.pos = vec;
+                },
+            );
+            web_sys::window()
+                .unwrap()
+                .add_event_listener_with_callback(
+                    "mousemove",
+                    closure.as_ref().unchecked_ref(),
+                )
+                .unwrap();
+            closure.forget();
+        }
+
+        {
+            let api = self.api.clone();
+            let closure = Closure::<dyn FnMut(_)>::new(
+                move |_event: web_sys::MouseEvent| {
+                    let mut api = api.borrow_mut();
+                    api.mouse_input.is_down = true;
+                },
+            );
+            web_sys::window()
+                .unwrap()
+                .add_event_listener_with_callback(
+                    "mousedown",
+                    closure.as_ref().unchecked_ref(),
+                )
+                .unwrap();
+            closure.forget();
+        }
+
+        {
+            let api = self.api.clone();
+            let closure = Closure::<dyn FnMut(_)>::new(
+                move |_event: web_sys::MouseEvent| {
+                    let mut api = api.borrow_mut();
+                    api.mouse_input.is_down = false;
+                },
+            );
+            web_sys::window()
+                .unwrap()
+                .add_event_listener_with_callback(
+                    "mouseup",
+                    closure.as_ref().unchecked_ref(),
+                )
+                .unwrap();
+            closure.forget();
+        }
 
         let h = Rc::new(RefCell::<
             Option<Closure<dyn FnMut()>>,

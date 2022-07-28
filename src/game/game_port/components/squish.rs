@@ -1,5 +1,6 @@
 use super::*;
 
+#[derive(Default)]
 pub struct SquishConfig {
     pub start_height: f64,
     pub start_width: f64,
@@ -22,6 +23,59 @@ pub struct SquishAnimation {
     pub direction: SquishDirection,
     pub is_active: bool,
     pub engine: LinearProgress,
+}
+
+impl SquishAnimation {
+    pub fn new(config: SquishConfig, length: u32) -> Self {
+        Self {
+            config,
+            is_active: false,
+            direction: SquishDirection::Front,
+            engine: LinearProgress::new(length),
+        }
+    }
+
+    fn start(&mut self) {
+        self.engine.reset();
+        self.is_active = true;
+    }
+
+    pub fn front(mut self) -> Self {
+        self.start();
+        self.direction = SquishDirection::Front;
+        self
+    }
+    pub fn front_mut(&mut self) {
+        self.start();
+        self.direction = SquishDirection::Front;
+    }
+    pub fn left(mut self) -> Self {
+        self.start();
+        self.direction = SquishDirection::Left;
+        self
+    }
+    pub fn left_mut(&mut self) {
+        self.start();
+        self.direction = SquishDirection::Left;
+    }
+    pub fn right(mut self) -> Self {
+        self.start();
+        self.direction = SquishDirection::Right;
+        self
+    }
+    pub fn right_mut(&mut self) {
+        self.start();
+        self.direction = SquishDirection::Right;
+    }
+    pub fn back(mut self) -> Self {
+        self.start();
+        self.direction = SquishDirection::Back;
+        self
+    }
+    pub fn back_mut(&mut self) {
+        self.start();
+        self.direction = SquishDirection::Back;
+    }
 }
 
 impl HasLinearProgress for SquishAnimation {
