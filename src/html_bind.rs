@@ -72,7 +72,7 @@ impl GameRunner<HTMLApi> {
             let api = self.api.clone();
             let window = web_sys::window().unwrap();
             let closure = Closure::<dyn FnMut(_)>::new(
-                move |event: web_sys::MouseEvent| {
+                move |event: web_sys::PointerEvent| {
                     let height = window
                         .inner_height()
                         .unwrap()
@@ -89,7 +89,7 @@ impl GameRunner<HTMLApi> {
             web_sys::window()
                 .unwrap()
                 .add_event_listener_with_callback(
-                    "mousemove",
+                    "pointermove",
                     closure.as_ref().unchecked_ref(),
                 )
                 .unwrap();
@@ -97,17 +97,28 @@ impl GameRunner<HTMLApi> {
         }
 
         {
+            let window = web_sys::window().unwrap();
             let api = self.api.clone();
             let closure = Closure::<dyn FnMut(_)>::new(
-                move |_event: web_sys::MouseEvent| {
+                move |event: web_sys::PointerEvent| {
                     let mut api = api.borrow_mut();
                     api.mouse_input.is_down = true;
+                    let height = window
+                        .inner_height()
+                        .unwrap()
+                        .as_f64()
+                        .unwrap();
+                    let x = event.offset_x() as f64;
+                    let y =
+                        height - event.offset_y() as f64;
+                    let vec = Vec2::new(x, y);
+                    api.mouse_input.pos = vec;
                 },
             );
             web_sys::window()
                 .unwrap()
                 .add_event_listener_with_callback(
-                    "mousedown",
+                    "pointerdown",
                     closure.as_ref().unchecked_ref(),
                 )
                 .unwrap();
@@ -117,7 +128,7 @@ impl GameRunner<HTMLApi> {
         {
             let api = self.api.clone();
             let closure = Closure::<dyn FnMut(_)>::new(
-                move |_event: web_sys::MouseEvent| {
+                move |_event: web_sys::PointerEvent| {
                     let mut api = api.borrow_mut();
                     api.mouse_input.is_down = false;
                 },
@@ -125,7 +136,7 @@ impl GameRunner<HTMLApi> {
             web_sys::window()
                 .unwrap()
                 .add_event_listener_with_callback(
-                    "mouseup",
+                    "pointerup",
                     closure.as_ref().unchecked_ref(),
                 )
                 .unwrap();
