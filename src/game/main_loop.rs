@@ -3,8 +3,9 @@ use hecs::*;
 
 /* Main loop */
 pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
-    api.log(&format!("{:?}", api.inputs().pos));
-    api.log(&format!("{:?}", api.inputs().is_down));
+    api.log(&format!("{}", &api.inputs().is_down));
+    let inputs = system_input(world, api);
+    api.log(&format!("{:?}", &inputs));
 
     system_fade_animation_advance(world, api);
     system_fade_animation(world, api);

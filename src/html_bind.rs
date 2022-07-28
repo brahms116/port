@@ -70,11 +70,18 @@ impl GameRunner<HTMLApi> {
 
         {
             let api = self.api.clone();
+            let window = web_sys::window().unwrap();
             let closure = Closure::<dyn FnMut(_)>::new(
                 move |event: web_sys::MouseEvent| {
+                    let height = window
+                        .inner_height()
+                        .unwrap()
+                        .as_f64()
+                        .unwrap();
                     let mut api = api.borrow_mut();
                     let x = event.offset_x() as f64;
-                    let y = event.offset_y() as f64;
+                    let y =
+                        height - event.offset_y() as f64;
                     let vec = Vec2::new(x, y);
                     api.mouse_input.pos = vec;
                 },
@@ -100,7 +107,7 @@ impl GameRunner<HTMLApi> {
             web_sys::window()
                 .unwrap()
                 .add_event_listener_with_callback(
-                    "mousemove",
+                    "mousedown",
                     closure.as_ref().unchecked_ref(),
                 )
                 .unwrap();
