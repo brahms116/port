@@ -8,10 +8,17 @@ pub fn system_player_movt<T: GameApi>(
     for (_id, (_player, squish_movt, rotation)) in
         world.query_mut::<(&Player, &mut SquishMovement, &mut Rotation)>()
     {
-        if inputs.up && !squish_movt.is_moving() {
-            squish_movt.start_movt();
+        if inputs.up && !squish_movt.is_moving_forward() {
+            squish_movt.forward();
         }
-        if !inputs.up && squish_movt.is_moving() {
+        if !inputs.up && squish_movt.is_moving_forward() {
+            squish_movt.stop();
+        }
+
+        if inputs.down && !squish_movt.is_moving_back() {
+            squish_movt.back();
+        }
+        if !inputs.down && squish_movt.is_moving_back() {
             squish_movt.stop();
         }
 

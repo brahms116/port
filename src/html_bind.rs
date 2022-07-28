@@ -143,6 +143,76 @@ impl GameRunner<HTMLApi> {
             closure.forget();
         }
 
+        {
+            let api = self.api.clone();
+            let closure = Closure::<dyn FnMut(_)>::new(
+                move |event: web_sys::KeyboardEvent| {
+                    let mut api = api.borrow_mut();
+                    let key = event.key();
+                    if key == "w" || key == "ArrowUp" {
+                        api.keyboard_input.down = false;
+                        api.keyboard_input.up = true;
+                    } else if key == "a"
+                        || key == "ArrowLeft"
+                    {
+                        api.keyboard_input.right = false;
+                        api.keyboard_input.left = true;
+                    } else if key == "s"
+                        || key == "ArrowDown"
+                    {
+                        api.keyboard_input.up = false;
+                        api.keyboard_input.down = true;
+                    } else if key == "d"
+                        || key == "ArrowRight"
+                    {
+                        api.keyboard_input.left = false;
+                        api.keyboard_input.right = true;
+                    }
+                },
+            );
+            web_sys::window()
+                .unwrap()
+                .add_event_listener_with_callback(
+                    "keydown",
+                    closure.as_ref().unchecked_ref(),
+                )
+                .unwrap();
+            closure.forget();
+        }
+
+        {
+            let api = self.api.clone();
+            let closure = Closure::<dyn FnMut(_)>::new(
+                move |event: web_sys::KeyboardEvent| {
+                    let mut api = api.borrow_mut();
+                    let key = event.key();
+                    if key == "w" || key == "ArrowUp" {
+                        api.keyboard_input.up = false;
+                    } else if key == "a"
+                        || key == "ArrowLeft"
+                    {
+                        api.keyboard_input.left = false;
+                    } else if key == "s"
+                        || key == "ArrowDown"
+                    {
+                        api.keyboard_input.down = false;
+                    } else if key == "d"
+                        || key == "ArrowRight"
+                    {
+                        api.keyboard_input.right = false;
+                    }
+                },
+            );
+            web_sys::window()
+                .unwrap()
+                .add_event_listener_with_callback(
+                    "keyup",
+                    closure.as_ref().unchecked_ref(),
+                )
+                .unwrap();
+            closure.forget();
+        }
+
         let h = Rc::new(RefCell::<
             Option<Closure<dyn FnMut()>>,
         >::new(None));
@@ -180,6 +250,7 @@ pub struct HTMLApi {
     canvas: CanvasElement,
     window_size: WindowSize,
     mouse_input: MouseInput,
+    keyboard_input: GameInput,
 }
 
 impl HTMLApi {
@@ -188,6 +259,7 @@ impl HTMLApi {
             canvas: CanvasElement::new(),
             window_size: WindowSize::from_dom(),
             mouse_input: MouseInput::default(),
+            keyboard_input: GameInput::default(),
         }
     }
 
@@ -293,6 +365,10 @@ impl GameApi for HTMLApi {
 
     fn inputs(&self) -> &MouseInput {
         &self.mouse_input
+    }
+
+    fn key_inputs(&self) -> &GameInput {
+        &self.keyboard_input
     }
 
     fn log(&self, msg: &str) {

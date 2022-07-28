@@ -6,14 +6,6 @@ pub struct Player();
 
 pub struct StoryBlocker();
 
-#[derive(Debug, Default)]
-pub struct GameInput {
-    pub up: bool,
-    pub down: bool,
-    pub left: bool,
-    pub right: bool,
-}
-
 pub struct InputController {
     down_point: Option<Vec2>,
 }
