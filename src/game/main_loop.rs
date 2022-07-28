@@ -12,6 +12,7 @@ pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
     system_squish_animation(world, api);
     system_squish_movt(world, api);
     system_movement(world, api);
+    system_rotation(world, api);
     system_motion(world, api);
     system_rectangle_render(world, api);
     system_render(world, api);

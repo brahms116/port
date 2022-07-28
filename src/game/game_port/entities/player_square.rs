@@ -57,6 +57,7 @@ pub fn create_player_square(
     Movement,
     SquishAnimation,
     SquishMovement,
+    Rotation,
 ) {
     let surface = Surface {
         points: vec![],
@@ -84,5 +85,6 @@ pub fn create_player_square(
         )),
         SquishAnimation::new(SquishConfig::default(), 25),
         squish,
+        Rotation::new(),
     )
 }
