@@ -6,6 +6,7 @@ mod globals;
 mod movement;
 mod player_state;
 mod rectangle;
+mod rotation;
 mod squish;
 mod squish_movt;
 
@@ -15,5 +16,6 @@ pub use globals::*;
 pub use movement::*;
 pub use player_state::*;
 pub use rectangle::*;
+pub use rotation::*;
 pub use squish::*;
 pub use squish_movt::*;

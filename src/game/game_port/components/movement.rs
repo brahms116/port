@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 #[derive(Hash, PartialEq, Eq)]
 pub enum MovementDirection {
     Front,
