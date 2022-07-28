@@ -84,4 +84,8 @@ impl Movement {
         self.direction = MovementDirection::Right;
         self.applied_accel = 0.0;
     }
+    pub fn stop_mut(&mut self) {
+        self.direction = MovementDirection::Idle;
+        self.applied_accel = 0.0;
+    }
 }

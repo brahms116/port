@@ -10,6 +10,8 @@ pub enum SquishMovementState {
     StartedStopAnimation,
 }
 
+type S = SquishMovementState;
+
 pub struct SquishMovement {
     pub state: SquishMovementState,
     // should add direction? maybe
@@ -17,16 +19,23 @@ pub struct SquishMovement {
 
 impl SquishMovement {
     pub fn new() -> Self {
-        Self {
-            state: SquishMovementState::Idle,
+        Self { state: S::Idle }
+    }
+
+    pub fn is_moving(&self) -> bool {
+        match self.state {
+            S::Idle
+            | S::WaitingStopAnimation
+            | S::StartedStopAnimation => false,
+            _ => true,
         }
     }
+
     pub fn start_movt(&mut self) {
-        self.state = SquishMovementState::WaitingAnimation
+        self.state = S::WaitingAnimation
     }
 
     pub fn stop(&mut self) {
-        self.state =
-            SquishMovementState::WaitingStopAnimation
+        self.state = S::WaitingStopAnimation
     }
 }

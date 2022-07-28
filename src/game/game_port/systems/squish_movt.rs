@@ -53,7 +53,7 @@ pub fn system_squish_movt<T: GameApi>(
                         Vec2::new(0.0, offset * 0.5)
                             .rotate_deg(transform.rotation);
                     transform.position += offset;
-
+                    movt.stop_mut();
                     sm.state = State::StartedStopAnimation
                 }
                 State::StartedStopAnimation => {}

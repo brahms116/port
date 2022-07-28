@@ -67,7 +67,11 @@ pub fn system_movement<T: GameApi>(
             MovementDirection::Front => {
                 motion.accel.y += apply_accel
             }
-            MovementDirection::Idle => {}
+            MovementDirection::Idle => {
+                /* TODO please implement this properly, rethink about how idle works */
+                motion.accel = Vec2::default();
+                motion.vel = Vec2::default();
+            }
             MovementDirection::Back => {
                 motion.accel.y -= apply_accel
             }

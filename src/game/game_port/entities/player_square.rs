@@ -63,8 +63,7 @@ pub fn create_player_square(
         color: PLAYER_COLOR,
     };
 
-    let mut squish = SquishMovement::new();
-    squish.start_movt();
+    let squish = SquishMovement::new();
 
     (
         transform,
