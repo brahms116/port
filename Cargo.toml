@@ -31,7 +31,11 @@ features = [
   'Element',
   'HtmlElement',
   'Node',
-  'Window'
+  'Window',
+  'TouchEvent',
+  'TouchList',
+  'Touch',
+  'PointerEvent'
 ]
 
 
