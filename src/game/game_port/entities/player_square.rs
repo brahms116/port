@@ -66,6 +66,13 @@ pub fn create_player_square(
 
     let squish = SquishMovement::new();
 
+    let mut travel_settings =
+        TravelSettings::uniform_config(&TravelConfig {
+            max_vel: PLAYER_VELOCITY,
+            travel_accel: PLAYER_ACCEL,
+        });
+    travel_settings.back.max_vel = PLAYER_VELOCITY * 0.5;
+
     (
         transform,
         Render(vec![surface]),
@@ -77,14 +84,9 @@ pub fn create_player_square(
         RenderOffset(Vec2::default()),
         FadeAnimation::new(50),
         Motion::default(),
-        Movement::new(TravelSettings::uniform_config(
-            &TravelConfig {
-                max_vel: PLAYER_VELOCITY,
-                travel_accel: PLAYER_ACCEL,
-            },
-        )),
-        SquishAnimation::new(SquishConfig::default(), 25),
+        Movement::new(travel_settings),
+        SquishAnimation::new(SquishConfig::default(), 15),
         squish,
-        Rotation::new(),
+        Rotation::new(RotationConfig::new(3.0)),
     )
 }

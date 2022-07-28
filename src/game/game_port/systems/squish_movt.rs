@@ -21,7 +21,11 @@ pub fn system_squish_movt<T: GameApi>(
                 State::WaitingAnimation => {
                     squish.config =
                         player_squish_setting_start();
-                    squish.back_mut();
+                    if sm.is_forward {
+                        squish.back();
+                    } else {
+                        squish.front();
+                    }
 
                     let offset =
                         squish.config.finish_height
@@ -29,14 +33,23 @@ pub fn system_squish_movt<T: GameApi>(
                     let offset =
                         Vec2::new(0.0, offset * 0.5)
                             .rotate_deg(transform.rotation);
-                    transform.position += offset;
+
+                    if sm.is_forward {
+                        transform.position += offset;
+                    } else {
+                        transform.position -= offset;
+                    }
 
                     sm.state = State::StartedAnimation;
                 }
                 State::StartedAnimation => {
                     let poll = squish.poll();
                     if poll > 0.2 {
-                        movt.forward_mut();
+                        if sm.is_forward {
+                            movt.forward();
+                        } else {
+                            movt.back();
+                        }
                         sm.state = State::ForceApplied
                     }
                 }
@@ -44,7 +57,12 @@ pub fn system_squish_movt<T: GameApi>(
                 State::WaitingStopAnimation => {
                     squish.config =
                         player_squish_setting_stop();
-                    squish.front_mut();
+
+                    if sm.is_forward {
+                        squish.front();
+                    } else {
+                        squish.back();
+                    }
 
                     let offset =
                         squish.config.finish_height
@@ -52,8 +70,12 @@ pub fn system_squish_movt<T: GameApi>(
                     let offset =
                         Vec2::new(0.0, offset * 0.5)
                             .rotate_deg(transform.rotation);
-                    transform.position += offset;
-                    movt.stop_mut();
+                    if sm.is_forward {
+                        transform.position += offset;
+                    } else {
+                        transform.position -= offset;
+                    }
+                    movt.stop();
                     sm.state = State::StartedStopAnimation
                 }
                 State::StartedStopAnimation => {}

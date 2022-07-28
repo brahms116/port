@@ -46,43 +46,23 @@ impl Movement {
         }
     }
 
-    pub fn forward(mut self) -> Self {
-        self.direction = MovementDirection::Front;
-        self.applied_accel = 0.0;
-        self
-    }
-    pub fn forward_mut(&mut self) {
+    pub fn forward(&mut self) {
         self.direction = MovementDirection::Front;
         self.applied_accel = 0.0;
     }
-    pub fn back(mut self) -> Self {
-        self.direction = MovementDirection::Back;
-        self.applied_accel = 0.0;
-        self
-    }
-    pub fn back_mut(&mut self) {
+    pub fn back(&mut self) {
         self.direction = MovementDirection::Back;
         self.applied_accel = 0.0;
     }
-    pub fn left(mut self) -> Self {
-        self.direction = MovementDirection::Left;
-        self.applied_accel = 0.0;
-        self
-    }
-    pub fn left_mut(&mut self) {
+    pub fn left(&mut self) {
         self.direction = MovementDirection::Left;
         self.applied_accel = 0.0;
     }
-    pub fn right(mut self) -> Self {
-        self.direction = MovementDirection::Right;
-        self.applied_accel = 0.0;
-        self
-    }
-    pub fn right_mut(&mut self) {
+    pub fn right(&mut self) {
         self.direction = MovementDirection::Right;
         self.applied_accel = 0.0;
     }
-    pub fn stop_mut(&mut self) {
+    pub fn stop(&mut self) {
         self.direction = MovementDirection::Idle;
         self.applied_accel = 0.0;
     }

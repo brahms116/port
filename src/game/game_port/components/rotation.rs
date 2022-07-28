@@ -10,13 +10,29 @@ pub enum RotationState {
 
 type S = RotationState;
 
+pub struct RotationConfig {
+    pub rotation_speed: f64,
+}
+
+impl RotationConfig {
+    pub fn new(n: f64) -> Self {
+        Self { rotation_speed: n }
+    }
+}
+
 pub struct Rotation {
     pub state: RotationState,
+    pub config: RotationConfig,
+    pub applied_vel: f64,
 }
 
 impl Rotation {
-    pub fn new() -> Self {
-        Self { state: S::Idle }
+    pub fn new(config: RotationConfig) -> Self {
+        Self {
+            state: S::Idle,
+            config,
+            applied_vel: 0.0,
+        }
     }
 
     pub fn is_left(&self) -> bool {
@@ -27,14 +43,16 @@ impl Rotation {
     }
 
     pub fn left(&mut self) {
-        self.state = S::Left
+        self.state = S::Left;
+        self.applied_vel = 0.0;
     }
 
     pub fn right(&mut self) {
-        self.state = S::Right
+        self.state = S::Right;
+        self.applied_vel = 0.0;
     }
 
     pub fn stop(&mut self) {
-        self.state = S::Idle
+        self.state = S::Idle;
     }
 }
