@@ -1,5 +1,35 @@
 use super::*;
 
+pub fn system_render_ui<T: GameApi>(
+    world: &World,
+    api: &T,
+) {
+    let camera_transform = get_camera_transform(world, api)
+        .unwrap_or_default();
+
+    for (_id, (transform, ui)) in
+        &mut world.query::<(&Transform, &UI)>()
+    {
+        let resolved = (transform.position
+            - camera_transform.position)
+            .rotate_deg(-camera_transform.rotation)
+            + camera_transform.position;
+
+        api.log(&format!("{:?}", resolved));
+
+        let screen_point = map_vec2(
+            &resolved,
+            &camera_transform.position,
+            api.window_size(),
+        );
+
+        api.set_element_position(screen_point, &ui.html_id);
+        api.set_element_rotation(
+            transform.rotation - camera_transform.rotation,
+            &ui.html_id,
+        );
+    }
+}
 pub fn system_render<T: GameApi>(world: &World, api: &T) {
     let camera_transfrom = get_camera_transform(world, api)
         .unwrap_or_default();

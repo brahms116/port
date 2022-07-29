@@ -11,6 +11,7 @@ mod render;
 mod rgb;
 mod surface;
 mod transform;
+mod ui;
 mod vec2;
 mod width;
 
@@ -29,5 +30,6 @@ pub use render::*;
 pub use rgb::*;
 pub use surface::*;
 pub use transform::*;
+pub use ui::*;
 pub use vec2::*;
 pub use width::*;

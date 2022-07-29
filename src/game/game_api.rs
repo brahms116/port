@@ -12,6 +12,7 @@ pub trait GameApi {
     fn window_size(&self) -> &WindowSize;
     fn draw_surface(&self, surface: Surface);
     fn set_element_position(&self, point: Vec2, id: &str);
+    fn set_element_rotation(&self, deg: f64, id: &str);
     fn resize_element(&self, size: u32, id: &str);
     fn set_element_opacity(&self, opacity: u32, id: &str);
     fn inputs(&self) -> &MouseInput;

@@ -306,6 +306,25 @@ impl GameApi for HTMLApi {
         }
     }
 
+    fn set_element_rotation(&self, deg: f64, id: &str) {
+        let style = web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .get_element_by_id(id)
+            .unwrap()
+            .dyn_into::<web_sys::HtmlElement>()
+            .unwrap()
+            .style();
+
+        style
+            .set_property(
+                "transform",
+                &format!("rotate({}deg)", -deg),
+            )
+            .unwrap();
+    }
+
     fn set_element_position(
         &self,
         _point: Vec2,
