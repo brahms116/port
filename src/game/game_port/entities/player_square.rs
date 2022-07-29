@@ -1,6 +1,6 @@
 use super::*;
 
-pub const PLAYER_HEIGHT: f64 = 12.0;
+pub const PLAYER_HEIGHT: f64 = 18.0;
 pub const PLAYER_WIDTH: f64 = 12.0;
 pub const PLAYER_SQUISH_HEIGHT: f64 = 2.0;
 pub const PLAYER_SQUISH_WIDTH: f64 = 30.0;
@@ -8,9 +8,9 @@ pub const PLAYER_SQUISH_WIDTH: f64 = 30.0;
 pub const PLAYER_MOVE_HEIGHT: f64 = 20.0;
 pub const PLAYER_MOVE_WIDTH: f64 = 8.0;
 pub const PLAYER_COLOR: RGBA = RGBA {
-    r: 0,
-    g: 0,
-    b: 0,
+    r: 221,
+    g: 255,
+    b: 218,
     a: 1.0,
 };
 
@@ -75,7 +75,22 @@ pub fn create_player_square(
 
     (
         transform,
-        Render(vec![surface]),
+        Render(vec![
+            surface,
+            // Surface {
+            //     points: vec![
+            //         Vec2::new(-4.0, -4.0),
+            //         Vec2::new(0.0, 4.0),
+            //         Vec2::new(4.0, -4.0),
+            //     ],
+            //     color: RGBA {
+            //         r: 0,
+            //         g: 255,
+            //         b: 0,
+            //         a: 1.0,
+            //     },
+            // },
+        ]),
         Height(PLAYER_HEIGHT),
         Width(PLAYER_WIDTH),
         Rectangle(),
@@ -87,6 +102,6 @@ pub fn create_player_square(
         Movement::new(travel_settings),
         SquishAnimation::new(SquishConfig::default(), 15),
         squish,
-        Rotation::new(RotationConfig::new(3.0)),
+        Rotation::new(RotationConfig::new(1.5)),
     )
 }

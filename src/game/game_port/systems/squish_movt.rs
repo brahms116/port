@@ -30,6 +30,7 @@ pub fn system_squish_movt<T: GameApi>(
                     let offset =
                         squish.config.finish_height
                             - squish.config.start_height;
+
                     let offset =
                         Vec2::new(0.0, offset * 0.5)
                             .rotate_deg(transform.rotation);

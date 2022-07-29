@@ -1,8 +1,8 @@
 use super::*;
 
 pub fn system_render<T: GameApi>(world: &World, api: &T) {
-    let camera_transfrom =
-        get_camera_transform(world).unwrap_or_default();
+    let camera_transfrom = get_camera_transform(world, api)
+        .unwrap_or_default();
     for (
         _id,
         (transform, render_surface, opacity, offset),
@@ -22,7 +22,9 @@ pub fn system_render<T: GameApi>(world: &World, api: &T) {
         let mut transform = transform.clone();
 
         if let Some(offset) = offset {
-            transform.position += offset.0
+            let rotated =
+                offset.0.rotate_deg(transform.rotation);
+            transform.position += rotated
         }
 
         render(
@@ -44,8 +46,16 @@ pub fn render<T: GameApi>(
         let points: Vec<Vec2> = surface
             .points
             .iter()
-            .map(|e| e.apply(transform))
+            .map(|e| {
+                let resolved = e.apply(transform);
+                let resolved = (resolved
+                    - camera_transform.position)
+                    .rotate_deg(-camera_transform.rotation)
+                    + camera_transform.position;
+                resolved
+            })
             .collect();
+
         /* Need to apply rotation */
         let points: Vec<Vec2> = points
             .iter()
