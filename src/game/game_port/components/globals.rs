@@ -26,7 +26,7 @@ impl InputController {
     }
 
     pub fn input(&self, curr: Vec2) -> GameInput {
-        let dead_zone = 100.0;
+        let dead_zone = 0.0;
         if let Some(pt) = self.down_point {
             GameInput {
                 up: curr.y - pt.y > dead_zone,

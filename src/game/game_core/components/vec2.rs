@@ -28,26 +28,19 @@ impl Vec2 {
         (self.x.powi(2) + self.y.powi(2)).sqrt()
     }
 
-    pub fn rotate(
-        mut self,
-        radians: f64,
-    ) -> Self {
+    pub fn rotate(mut self, radians: f64) -> Self {
         let x = self.x * radians.cos()
             + self.y * -radians.sin();
-        let y = self.x * radians.sin()
-            + self.y * radians.cos();
+        let y =
+            self.x * radians.sin() + self.y * radians.cos();
         self.x = x;
         self.y = y;
         self
     }
 
-    pub fn rotate_deg(
-        self,
-        degrees: f64,
-    ) -> Self {
-        let radians = degrees
-            * std::f64::consts::PI
-            / 180.0;
+    pub fn rotate_deg(self, degrees: f64) -> Self {
+        let radians =
+            degrees * std::f64::consts::PI / 180.0;
         self.rotate(radians)
     }
 }
@@ -185,12 +178,8 @@ impl Default for Vec2 {
 }
 
 impl Transformable for Vec2 {
-    fn apply(
-        mut self,
-        transform: &Transform,
-    ) -> Self {
-        self =
-            self.rotate_deg(transform.rotation);
+    fn apply(mut self, transform: &Transform) -> Self {
+        self = self.rotate_deg(transform.rotation);
         self += transform.position;
         self
     }
