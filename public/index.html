@@ -5,10 +5,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Raleway&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&display=swap"
       rel="stylesheet"
     />
     <style>
+      html {
+        background: #101010;
+        font-family: Raleway, sans-serif;
+      }
       * {
         padding: 0;
         margin: 0;
@@ -20,7 +24,10 @@
       #canvas {
         touch-action: none;
       }
-      #swipe-right {
+      #hello-there {
+        font-size: 2em;
+        transform-origin: left top 0;
+        color: #ddffda;
         position: fixed;
         top: 0px;
         left: 0px;
@@ -29,6 +36,7 @@
     <title>David's Portfolio</title>
   </head>
   <body class="">
+    <div id="hello-there">Hello there,</div>
     <canvas id="canvas" class=""></canvas>
   </body>
   <script type="module">
