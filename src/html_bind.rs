@@ -266,6 +266,15 @@ impl HTMLApi {
     pub fn update(&mut self) {
         self.canvas.resize();
         self.window_size = WindowSize::from_dom();
+        self.canvas.ctx.set_fill_style(
+            &RGBA::new(16, 16, 16, 1.0).to_string().into(),
+        );
+        self.canvas.ctx.fill_rect(
+            0.0,
+            0.0,
+            self.window_size.w as f64,
+            self.window_size.h as f64,
+        )
     }
 }
 

@@ -11,6 +11,7 @@ pub struct SquishConfig {
     pub should_anchor: bool,
 }
 
+#[derive(Debug)]
 pub enum SquishDirection {
     Front,
     Back,
