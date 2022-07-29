@@ -26,13 +26,13 @@ impl InputController {
     }
 
     pub fn input(&self, curr: Vec2) -> GameInput {
-        let dead_zone = 0.0;
+        let dead_zone = 100.0;
         if let Some(pt) = self.down_point {
             GameInput {
-                up: curr.y - pt.y > dead_zone,
+                up: curr.y - pt.y > 0.0,
                 left: pt.x - curr.x > dead_zone,
                 right: curr.x - pt.x > dead_zone,
-                down: pt.y - curr.y > dead_zone,
+                down: pt.y - curr.y > 0.0,
             }
         } else {
             GameInput::default()
