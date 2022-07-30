@@ -20,8 +20,12 @@ impl Vec2 {
         Vec2 { y: 0.0, x: 1.0 }
     }
 
-    pub fn angle(&self) -> f64 {
-        (self.y / self.x).atan()
+    pub fn unit(&self) -> Vec2 {
+        if self.mag() == 0.0 {
+            return Self::default();
+        } else {
+            self * (1.0 / self.mag())
+        }
     }
 
     pub fn mag(&self) -> f64 {

@@ -13,7 +13,6 @@ pub fn system_player_movt<T: GameApi>(
         }
         if !inputs.up && squish_movt.is_moving_forward() {
             squish_movt.stop();
-            rotation.stop();
         }
 
         if inputs.down && !squish_movt.is_moving_back() {
@@ -21,35 +20,21 @@ pub fn system_player_movt<T: GameApi>(
         }
         if !inputs.down && squish_movt.is_moving_back() {
             squish_movt.stop();
-            rotation.stop();
         }
 
-        if inputs.up && inputs.left && !rotation.is_left() {
+        if inputs.left && !rotation.is_left() {
             rotation.left();
         }
-        if inputs.up && !inputs.left && rotation.is_left() {
+        if !inputs.left && rotation.is_left() {
             rotation.stop();
         }
 
-        if inputs.up && inputs.right && !rotation.is_right() {
+        if inputs.right && !rotation.is_right() {
             rotation.right();
         }
-        if inputs.up && !inputs.right && rotation.is_right() {
+        if !inputs.right && rotation.is_right() {
             rotation.stop();
         }
 
-        if inputs.down && inputs.left && !rotation.is_right() {
-            rotation.right();
-        }
-        if inputs.down && !inputs.left && rotation.is_right() {
-            rotation.stop();
-        }
-
-        if inputs.down && inputs.right && !rotation.is_left() {
-            rotation.left();
-        }
-        if inputs.down && !inputs.right && rotation.is_left() {
-            rotation.stop();
-        }
     }
 }

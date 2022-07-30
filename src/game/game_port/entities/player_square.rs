@@ -102,6 +102,6 @@ pub fn create_player_square(
         Movement::new(travel_settings),
         SquishAnimation::new(SquishConfig::default(), 15),
         squish,
-        Rotation::new(RotationConfig::new(1.5)),
+        Rotation::new(RotationConfig::new(1.0)),
     )
 }

@@ -6,6 +6,7 @@ pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
     let inputs = system_input(world, api);
 
     system_player_movt(world, api, &inputs);
+    system_loose_tracking(world, api);
     system_fade_animation_advance(world, api);
     system_fade_animation(world, api);
     system_squish_animation_advance(world, api);

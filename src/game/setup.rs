@@ -26,7 +26,6 @@ pub fn setup(world: &mut World) {
     ));
     world.spawn(get_camera(
         Transform::new(Vec2::new(0.0, 100.0), 0.0),
-        Parent::new(Some(player)),
-        // Parent::new(None),
+        Some(player), // Parent::new(None),
     ));
 }
