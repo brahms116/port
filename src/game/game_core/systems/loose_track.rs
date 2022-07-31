@@ -33,12 +33,6 @@ pub fn system_loose_tracking<T: GameApi>(
         let mut source_transform =
             source_transform.unwrap();
 
-        // let source_motion = world.get_mut::<Motion>(id);
-        // if source_motion.is_err() {
-        //     continue;
-        // }
-        // let mut source_motion = source_motion.unwrap();
-
         let diff_vec = target_transform.position
             - source_transform.position;
 
@@ -60,11 +54,13 @@ pub fn system_loose_tracking<T: GameApi>(
             travel_speed
         };
 
-        let rotation_speed = if is_inside {
-            track.inner_rotation_vel
-        } else {
-            track.outer_rotation_vel
-        };
+        let rotation_speed =
+            if target_motion.vel.mag() > 0.0 {
+                // turn off rotation while moving
+                0.0
+            } else {
+                track.stationary_rotation_vel
+            };
 
         let rotation_speed =
             if rotation_speed > diff_rotation.abs() {
@@ -82,12 +78,6 @@ pub fn system_loose_tracking<T: GameApi>(
         };
 
         source_transform.position += velocity;
-
-        if target_motion.vel.mag() == 0.0 {
-            source_transform.rotation += rotation;
-        }
-
-        //source_motion.vel = velocity;
-        //source_motion.angular_vel = rotation;
+        source_transform.rotation += rotation;
     }
 }
