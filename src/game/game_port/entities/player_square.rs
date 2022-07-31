@@ -66,12 +66,11 @@ pub fn create_player_square(
 
     let squish = SquishMovement::new();
 
-    let mut travel_settings =
+    let travel_settings =
         TravelSettings::uniform_config(&TravelConfig {
             max_vel: PLAYER_VELOCITY,
             travel_accel: PLAYER_ACCEL,
         });
-    travel_settings.back.max_vel = PLAYER_VELOCITY * 0.5;
 
     (
         transform,

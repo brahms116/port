@@ -10,7 +10,7 @@ pub fn get_camera(
             target: tracking_target,
             radius: 100.0,
             inner_travel_vel: 1.0,
-            inner_rotation_vel: 0.9,
+            inner_rotation_vel: 4.0,
             outer_rotation_vel: 0.5,
         },
         Motion::default(),

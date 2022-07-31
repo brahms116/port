@@ -83,11 +83,9 @@ pub fn system_loose_tracking<T: GameApi>(
 
         source_transform.position += velocity;
 
-        // if target_motion.vel.mag() > 0.0
-        //     || target_motion.angular_vel != 0.0
-        // {
-        source_transform.rotation += rotation;
-        //}
+        if target_motion.vel.mag() == 0.0 {
+            source_transform.rotation += rotation;
+        }
 
         //source_motion.vel = velocity;
         //source_motion.angular_vel = rotation;

@@ -22,17 +22,31 @@ pub fn system_player_movt<T: GameApi>(
             squish_movt.stop();
         }
 
-        if inputs.left && !rotation.is_left() {
+        if !inputs.down && inputs.left && !rotation.is_left() {
             rotation.left();
         }
-        if !inputs.left && rotation.is_left() {
+        if !inputs.down && !inputs.left && rotation.is_left() {
             rotation.stop();
         }
 
-        if inputs.right && !rotation.is_right() {
+        if !inputs.down && inputs.right && !rotation.is_right() {
             rotation.right();
         }
-        if !inputs.right && rotation.is_right() {
+        if !inputs.down && !inputs.right && rotation.is_right() {
+            rotation.stop();
+        }
+
+        if inputs.down && inputs.left && !rotation.is_right() {
+            rotation.right();
+        }
+        if inputs.down && !inputs.left && rotation.is_right() {
+            rotation.stop();
+        }
+
+        if inputs.down && inputs.right && !rotation.is_left() {
+            rotation.left();
+        }
+        if inputs.down && !inputs.right && rotation.is_left() {
             rotation.stop();
         }
 
