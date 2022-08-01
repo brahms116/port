@@ -28,8 +28,21 @@ impl Vec2 {
         }
     }
 
+    pub fn angle(&self, vec: Self) -> f64 {
+        let value = self.dot(vec) / self.mag() / vec.mag();
+        value.acos()
+    }
+
+    pub fn angle_deg(&self, vec: Self) -> f64 {
+        self.angle(vec) * 180.0 / std::f64::consts::PI
+    }
+
     pub fn mag(&self) -> f64 {
         (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
+
+    pub fn dot(&self, vec: Self) -> f64 {
+        self.x * vec.x + self.y * vec.y
     }
 
     pub fn rotate(mut self, radians: f64) -> Self {
@@ -46,6 +59,18 @@ impl Vec2 {
         let radians =
             degrees * std::f64::consts::PI / 180.0;
         self.rotate(radians)
+    }
+
+    pub fn perpendicular(&self) -> Self {
+        if self.mag() == 0.0 {
+            return Self::default();
+        }
+
+        if self.x != 0.0 {
+            Self::new(-self.y / self.x, 1.0).unit()
+        } else {
+            Self::new(1.0, -self.x / self.y).unit()
+        }
     }
 }
 
