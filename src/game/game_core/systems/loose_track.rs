@@ -78,6 +78,6 @@ pub fn system_loose_tracking<T: GameApi>(
         };
 
         source_transform.position += velocity;
-        source_transform.rotation += rotation;
+        // source_transform.rotation += rotation;
     }
 }
