@@ -7,9 +7,10 @@ pub fn system_loose_tracking<T: GameApi>(
     for (id, (track,)) in
         &mut world.query::<(&LooseTracking,)>()
     {
-        if track.target.is_none() {
+        if track.target.is_none() || !track.is_active {
             continue;
         }
+
         let target = track.target.unwrap();
 
         let target_transform =
@@ -36,48 +37,48 @@ pub fn system_loose_tracking<T: GameApi>(
         let diff_vec = target_transform.position
             - source_transform.position;
 
-        let diff_rotation = target_transform.rotation
-            - source_transform.rotation;
-
         let is_inside = diff_vec.mag() < track.radius;
+        source_transform.rotation = diff_vec.rotation();
 
-        let travel_speed = if is_inside {
-            track.inner_travel_vel
-        } else {
-            target_motion.vel.mag()
-        };
+        let mut perpendicular = track.perpendicular_ratio
+            * target_motion.vel.mag();
 
-        let travel_speed = if travel_speed > diff_vec.mag()
-        {
-            diff_vec.mag()
-        } else {
-            travel_speed
-        };
+        let prediction = target_transform.position
+            + target_motion.vel.rotate_deg(
+                target_motion.angular_vel
+                    + target_motion.angular_accel
+                    + target_transform.rotation,
+            );
 
-        let rotation_speed =
-            if target_motion.vel.mag() > 0.0 {
-                // turn off rotation while moving
-                0.0
-            } else {
-                track.stationary_rotation_vel
-            };
+        let mut z = (prediction
+            - target_transform.position)
+            .perpendicular();
 
-        let rotation_speed =
-            if rotation_speed > diff_rotation.abs() {
-                diff_rotation.abs()
-            } else {
-                rotation_speed
-            };
+        let mut distance = diff_vec.dot(z);
 
-        let velocity = diff_vec.unit() * travel_speed;
+        if distance < 0.0 {
+            z = z * -1.0;
+            distance = diff_vec.dot(z);
+        }
 
-        let rotation = if diff_rotation >= 0.0 {
-            rotation_speed
-        } else {
-            -rotation_speed
-        };
+        if perpendicular > distance {
+            perpendicular = distance;
+        }
 
-        source_transform.position += velocity;
-        // source_transform.rotation += rotation;
+        let opposite = distance - perpendicular;
+
+        let side = (track.radius.powi(2)
+            - opposite.powi(2))
+        .powf(0.5);
+
+        let side = target_transform.position
+            + (prediction - target_transform.position)
+                .unit()
+                * -side;
+
+        if !is_inside {
+            source_transform.position =
+                side + z * (-opposite);
+        }
     }
 }

@@ -7,6 +7,22 @@ pub struct Vec2 {
     pub y: f64,
 }
 
+#[derive(Debug)]
+pub enum Quadrant {
+    Zero,
+    X,
+    Quad1,
+    Y,
+    Quad2,
+    NegX,
+    Quad3,
+    NegY,
+    Quad4,
+}
+
+const TO_DEGREES: f64 = 180.0 / std::f64::consts::PI;
+const TO_RADIANS: f64 = std::f64::consts::PI / 180.0;
+
 impl Vec2 {
     pub fn new(x: f64, y: f64) -> Vec2 {
         Vec2 { x, y }
@@ -34,7 +50,7 @@ impl Vec2 {
     }
 
     pub fn angle_deg(&self, vec: Self) -> f64 {
-        self.angle(vec) * 180.0 / std::f64::consts::PI
+        self.angle(vec).to_degrees()
     }
 
     pub fn mag(&self) -> f64 {
@@ -56,8 +72,7 @@ impl Vec2 {
     }
 
     pub fn rotate_deg(self, degrees: f64) -> Self {
-        let radians =
-            degrees * std::f64::consts::PI / 180.0;
+        let radians = degrees.to_radians();
         self.rotate(radians)
     }
 
@@ -71,6 +86,90 @@ impl Vec2 {
         } else {
             Self::new(1.0, -self.x / self.y).unit()
         }
+    }
+
+    pub fn quadrant(&self) -> Quadrant {
+        if self.x == 0.0 && self.y == 0.0 {
+            return Quadrant::Zero;
+        }
+
+        if self.x == 0.0 && self.y > 0.0 {
+            return Quadrant::Y;
+        }
+
+        if self.x == 0.0 && self.y < 0.0 {
+            return Quadrant::NegY;
+        }
+
+        if self.x > 0.0 && self.y == 0.0 {
+            return Quadrant::X;
+        }
+
+        if self.x < 0.0 && self.y == 0.0 {
+            return Quadrant::NegX;
+        }
+
+        if self.x > 0.0 && self.y > 0.0 {
+            return Quadrant::Quad1;
+        }
+
+        if self.x < 0.0 && self.y > 0.0 {
+            return Quadrant::Quad2;
+        }
+
+        if self.x < 0.0 && self.y < 0.0 {
+            return Quadrant::Quad3;
+        }
+
+        if self.x > 0.0 && self.y < 0.0 {
+            return Quadrant::Quad4;
+        }
+
+        Quadrant::Zero
+    }
+
+    pub fn rotation(&self) -> f64 {
+        let quad = self.quadrant();
+
+        if let Quadrant::Zero = quad {
+            return 0.0;
+        }
+
+        if let Quadrant::X = quad {
+            return -90.0;
+        }
+
+        if let Quadrant::NegX = quad {
+            return 90.0;
+        }
+
+        if let Quadrant::Y = quad {
+            return 0.0;
+        }
+
+        if let Quadrant::NegY = quad {
+            return 0.0;
+        }
+
+        if let Quadrant::Quad1 = quad {
+            return -((self.x / self.y).atan()
+                * TO_DEGREES);
+        }
+
+        if let Quadrant::Quad2 = quad {
+            return (-self.x / self.y).atan() * TO_DEGREES;
+        }
+
+        if let Quadrant::Quad3 = quad {
+            return 180.0
+                - (-self.x / -self.y).atan() * TO_DEGREES;
+        }
+
+        if let Quadrant::Quad4 = quad {
+            return -(180.0
+                - (self.x / -self.y).atan() * TO_DEGREES);
+        }
+        0.0
     }
 }
 
