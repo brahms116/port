@@ -1,5 +1,6 @@
 use super::*;
 
+mod collision;
 mod controller;
 mod fade_animation;
 mod globals;
@@ -11,6 +12,7 @@ mod squish;
 mod squish_movt;
 mod triangle;
 
+pub use collision::*;
 pub use controller::*;
 pub use fade_animation::*;
 pub use globals::*;

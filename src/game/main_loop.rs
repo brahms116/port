@@ -15,6 +15,7 @@ pub fn main_loop<T: GameApi>(world: &mut World, api: &T) {
     system_movement(world, api);
     system_rotation(world, api);
     system_motion(world, api);
+    system_static_collision(world, api);
     system_rectangle_render(world, api);
     system_triangle_render(world, api);
     system_render_ui(world, api);
