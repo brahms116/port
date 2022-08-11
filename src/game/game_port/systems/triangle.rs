@@ -17,3 +17,17 @@ pub fn system_triangle_render<T: GameApi>(
         }
     }
 }
+
+pub fn system_triangle_collision_box<T: GameApi>(
+    world: &mut World,
+    _api: &T,
+) {
+    for(_id,(_tri, width,height, collision_box)) in world.query_mut::<(&Triangle, &Width, &Height,&mut CollisionBox)>(){
+        let points = vec![
+            Vec2::new(-width.0/2.0,-height.0/2.0),
+            Vec2::new(0.0,height.0/2.0),
+            Vec2::new(width.0/2.0,-height.0/2.0),
+        ];
+        collision_box.points = points;
+    }
+}

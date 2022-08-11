@@ -51,7 +51,7 @@ pub fn get_correction_rotation(
     let mut low = 0.0;
     let mut high = cor_rotation;
 
-    for _ in 0..5 {
+    for _ in 0..0 {
         let try_rotation = if is_pos {
             low + (high - low) / 2.0
         } else {
@@ -128,8 +128,26 @@ pub fn system_static_collision<T: GameApi>(
                 &static_collision_box.points,
                 &dynamic_collision_box.points,
             ) {
+                api.log(&format!("collision happened",));
+
+                api.log(&format!(
+                    "static {:?}",
+                    static_collision_box.points
+                ));
+                api.log(&format!(
+                    "dyn {:?}",
+                    dynamic_collision_box.points
+                ));
+
                 /* Collision happens */
-                let dynamic_vel = motion.vel;
+                let dynamic_vel = motion
+                    .vel
+                    .rotate_deg(dynamic_transform.rotation);
+
+                api.log(&format!(
+                    "dyn_vel {:?}",
+                    dynamic_vel
+                ));
 
                 if dynamic_vel.mag() != 0.0 {
                     let cor_vec = get_correction_vec(
@@ -137,6 +155,11 @@ pub fn system_static_collision<T: GameApi>(
                         &dynamic_collision_box.points,
                         dynamic_vel,
                     );
+
+                    api.log(&format!(
+                        "correction vec {:?}",
+                        cor_vec
+                    ));
 
                     if let Some(v) =
                         cor_vecs.get_mut(&dyn_id)
@@ -152,6 +175,11 @@ pub fn system_static_collision<T: GameApi>(
                 } else {
                     let rotation_vel = motion.angular_vel;
 
+                    api.log(&format!(
+                        "rotation vel {:?}",
+                        rotation_vel
+                    ));
+
                     let cor_rotation =
                         get_correction_rotation(
                             &static_collision_box.points,
@@ -159,6 +187,11 @@ pub fn system_static_collision<T: GameApi>(
                             rotation_vel,
                             &dynamic_transform,
                         );
+
+                    api.log(&format!(
+                        "correction rotation {:?}",
+                        cor_rotation
+                    ));
 
                     if let Some(r) =
                         cor_rotations.get_mut(&dyn_id)
