@@ -15,8 +15,6 @@ pub fn system_render_ui<T: GameApi>(
             .rotate_deg(-camera_transform.rotation)
             + camera_transform.position;
 
-        api.log(&format!("{:?}", resolved));
-
         let screen_point = map_vec2(
             &resolved,
             &camera_transform.position,

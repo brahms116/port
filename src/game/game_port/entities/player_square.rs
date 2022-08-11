@@ -48,7 +48,7 @@ pub fn create_player_square(
     Render,
     Height,
     Width,
-    Rectangle,
+    Triangle,
     Player,
     Opacity,
     RenderOffset,
@@ -66,12 +66,11 @@ pub fn create_player_square(
 
     let squish = SquishMovement::new();
 
-    let mut travel_settings =
+    let travel_settings =
         TravelSettings::uniform_config(&TravelConfig {
             max_vel: PLAYER_VELOCITY,
             travel_accel: PLAYER_ACCEL,
         });
-    travel_settings.back.max_vel = PLAYER_VELOCITY * 0.5;
 
     (
         transform,
@@ -93,7 +92,7 @@ pub fn create_player_square(
         ]),
         Height(PLAYER_HEIGHT),
         Width(PLAYER_WIDTH),
-        Rectangle(),
+        Triangle(),
         Player(),
         Opacity(1.0),
         RenderOffset(Vec2::default()),
@@ -102,6 +101,6 @@ pub fn create_player_square(
         Movement::new(travel_settings),
         SquishAnimation::new(SquishConfig::default(), 15),
         squish,
-        Rotation::new(RotationConfig::new(1.5)),
+        Rotation::new(RotationConfig::new(1.0)),
     )
 }

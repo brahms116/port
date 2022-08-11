@@ -1,5 +1,3 @@
-use super::*;
-
 #[derive(PartialEq)]
 pub enum SquishMovementState {
     Idle,
