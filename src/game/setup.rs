@@ -50,6 +50,12 @@ pub fn setup(world: &mut World) {
         String::from("hello-there"),
         Transform::new(Vec2::new(-80.0, 100.0), 0.0),
     ));
+
+    world.spawn(get_element(
+        String::from("instructions"),
+        Transform::new(Vec2::new(-80.0, 45.0), 0.0),
+    ));
+
     world.spawn(get_camera(
         Transform::new(Vec2::new(0.0, 0.0), 0.0),
         Some(player),
