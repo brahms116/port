@@ -1,6 +1,6 @@
 use super::*;
 
-const WALL_WIDTH: f64 = 5.0;
+const WALL_WIDTH: f64 = 2.5;
 
 pub fn get_wall(
     p1: Vec2,
