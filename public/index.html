@@ -37,7 +37,7 @@
         font-size: 0.75rem;
         font-weight: 600;
         transform-origin: left top 0;
-        color: #2e302d;
+        color: #9b9b9b;
         position: fixed;
         white-space: nowrap;
         top: -1000px;
@@ -53,6 +53,43 @@
         top: -1000px;
         left: 0px;
       }
+      #title {
+        transform-origin: left top 0;
+        color: #ddffda;
+        position: fixed;
+        white-space: nowrap;
+        top: -100px;
+        left: -100px;
+      }
+      #title img {
+        margin-right:2rem;
+      }
+
+      #title-header{
+        display:flex;
+        align-items:center;
+        margin-bottom:2rem;
+      }
+
+      #title .title-list {
+        margin-bottom: 2.5rem;
+        font-size: 1.5rem;
+        color: #9b9b9b;
+        margin-left: 30px;
+      }
+
+      #im{
+        font-weight: 400;
+        font-size:2rem;
+        margin-bottom:1rem;
+        display:block;
+      }
+      #david{
+        font-weight: 400;
+        font-size:4.5rem;
+        display:block;
+      }
+
       #loading {
         z-index: -1;
         font-size: 1em;
@@ -71,6 +108,15 @@
     <div id="hello-there">Hello there,</div>
     <div id="intro">This is my Portfolio.</div>
     <div id="instructions">Press W,A,S,D to move around</div>
+    <div id="title">
+      <div id="title-header">
+        <img src="./head.png" alt="image of david" width="200px" height="200px"></img>
+        <h1><span id="im">I'm</span><span id="david">David<span></h1>
+      </div>
+      <div class="title-list">Web App Development</div>
+      <div class="title-list">Rust</div>
+      <div class="title-list">Typescript</div>
+    </div>
     <canvas id="canvas" class=""></canvas>
   </body>
   <script type="module">
