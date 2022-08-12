@@ -23,19 +23,23 @@ fn set_walls(
 pub fn setup(world: &mut World) {
     /* Start Hub */
 
+    let x = 0.0;
+    let y = 0.0;
     set_walls(
         world,
         vec![
-            Vec2::new(-400.0, 400.0),
-            Vec2::new(-200.0, 150.0),
-            Vec2::new(-250.0, -0.0),
-            Vec2::new(-200.0, -100.0),
-            /* Origin point */
-            Vec2::new(0.0, -200.0),
-            Vec2::new(200.0, -100.0),
-            Vec2::new(300.0, 100.0),
-            Vec2::new(200.0, 400.0),
-            Vec2::new(-200.0, 500.0),
+            Vec2::new(x + 599.5, y + 1218.5),
+            Vec2::new(x + -79.0, y + 773.5),
+            Vec2::new(x + -79.0, y + 359.0),
+            Vec2::new(x + -226.0, y + 208.0),
+            Vec2::new(x + -226.0, y + -24.5),
+            Vec2::new(x + -79.0, y + -177.0),
+            Vec2::new(x + 87.5, y + -177.0),
+            Vec2::new(x + 255.0, y + -24.5),
+            Vec2::new(x + 240.5, y + 190.0),
+            Vec2::new(x + 87.5, y + 359.0),
+            Vec2::new(x + 137.0, y + 655.5),
+            Vec2::new(x + 687.5, y + 1031.0),
         ],
         None,
         None,
@@ -54,6 +58,11 @@ pub fn setup(world: &mut World) {
     world.spawn(get_element(
         String::from("instructions"),
         Transform::new(Vec2::new(-80.0, 45.0), 0.0),
+    ));
+
+    world.spawn(get_element(
+        String::from("intro"),
+        Transform::new(Vec2::new(281.0, 947.0), -57.0),
     ));
 
     world.spawn(get_camera(
