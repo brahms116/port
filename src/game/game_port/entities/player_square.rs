@@ -50,14 +50,14 @@ pub fn create_player_square(
     Width,
     Triangle,
     Player,
-    Opacity,
     RenderOffset,
-    FadeAnimation,
     Motion,
     Movement,
     SquishAnimation,
     SquishMovement,
     Rotation,
+    CollisionBox,
+    DynamicCollider,
 ) {
     let surface = Surface {
         points: vec![],
@@ -94,13 +94,13 @@ pub fn create_player_square(
         Width(PLAYER_WIDTH),
         Triangle(),
         Player(),
-        Opacity(1.0),
         RenderOffset(Vec2::default()),
-        FadeAnimation::new(50),
         Motion::default(),
         Movement::new(travel_settings),
         SquishAnimation::new(SquishConfig::default(), 15),
         squish,
         Rotation::new(RotationConfig::new(1.0)),
+        CollisionBox::new(Vec::new()),
+        DynamicCollider(),
     )
 }

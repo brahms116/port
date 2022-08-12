@@ -7,7 +7,7 @@ pub fn get_wall(
     p2: Vec2,
     p0: Option<Vec2>,
     p3: Option<Vec2>,
-) -> (Transform, Render) {
+) -> (Transform, Render, CollisionBox, StaticCollider) {
     let diff = p2 - p1;
 
     let offset = diff.perpendicular() * WALL_WIDTH;
@@ -69,5 +69,10 @@ pub fn get_wall(
         },
     };
 
-    (Transform::default(), Render(vec![surface]))
+    (
+        Transform::default(),
+        Render(vec![surface]),
+        CollisionBox::new(vec![v1, v2, v3, v4]),
+        StaticCollider(),
+    )
 }
