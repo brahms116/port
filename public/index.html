@@ -5,7 +5,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -59,31 +59,55 @@
         position: fixed;
         white-space: nowrap;
         top: -1000px;
-        left: 0px;
-      }
-      #title img {
-        margin-right:2rem;
+        left: 100px;
+        display:flex;
+        align-items:flex-start;
       }
 
-      #title-header{
+      #title-left {
         display:flex;
-        align-items:center;
-        margin-bottom:2rem;
+        flex-direction:column;
+        align-items:flex-end;
+        padding-top:3.5rem;
       }
+
+      .title-github-button{
+        font-size:1rem;
+        font-weight:600;
+        color:#FFFFFF;
+        background:#404040;
+        padding:1.2rem 2.8rem;
+        cursor: pointer;
+        margin-top:1rem;
+      }
+
+      .title-github-button:hover{
+        background:#424242;
+      }
+
+      #title h1 {
+        margin-bottom:1.5rem;
+      }
+
+      #title img {
+        margin-left:2rem;
+      }
+
 
       #title .title-list {
-        margin-bottom: 2.5rem;
-        font-size: 1.5rem;
-        color: #9b9b9b;
+        margin-bottom: 1.5rem;
+        font-size: 1.125rem;
+        color: #606060;
         margin-left: 30px;
       }
 
-      #im{
-        font-weight: 400;
-        font-size:2rem;
-        margin-bottom:1rem;
-        display:block;
+      #title .title-email {
+        margin-bottom: 1.5rem;
+        font-size: 1.125rem;
+        color: #FFFFFF;
+        margin-left: 30px;
       }
+
       #david{
         font-weight: 400;
         font-size:4.5rem;
@@ -109,13 +133,18 @@
     <div id="intro">This is my Portfolio.</div>
     <div id="instructions">Press W,A,S,D to move around</div>
     <div id="title">
-      <div id="title-header">
-        <img src="./head.png" alt="image of david" width="200px" height="200px"></img>
-        <h1><span id="im">I'm</span><span id="david">David<span></h1>
+      <div id="title-left">
+        <div>I'm</div>
+        <h1><span id="david">David<span></h1>
+        <div class="title-email">davidkwong17@gmail.com</div>
+        <div class="title-list">Web App Development</div>
+        <div class="title-list">Rust</div>
+        <div class="title-list">Typescript</div>
+        <a href="https://github.com/brahms116" target="_blank">
+          <div class="title-github-button">GITHUB PROFILE</div>
+        </a>
       </div>
-      <div class="title-list">Web App Development</div>
-      <div class="title-list">Rust</div>
-      <div class="title-list">Typescript</div>
+      <img src="./head.png" alt="image of david" width="163px" height="169px"></img>
     </div>
     <canvas id="canvas" class=""></canvas>
   </body>
