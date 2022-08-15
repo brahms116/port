@@ -315,11 +315,32 @@ pub fn setup(world: &mut World) {
     /* Title Area */
     get_octagon(
         world,
-        Vec2::y() * 825.0,
+        Vec2::y() * 925.0,
         800.0,
         Some(100.0),
         Some(100.0),
         Some(100.0),
+        Some(100.0),
+    );
+
+    get_octagon(
+        world,
+        Vec2::y() * 2025.0,
+        1000.0,
+        Some(100.0),
+        None,
+        Some(100.0),
+        None,
+    );
+
+    /* Project 1 */
+    get_octagon(
+        world,
+        Vec2::new(-1100.0, 925.0),
+        1000.0,
+        None,
+        Some(100.0),
+        None,
         Some(100.0),
     );
 
@@ -345,7 +366,12 @@ pub fn setup(world: &mut World) {
 
     world.spawn(get_element(
         String::from("title"),
-        Transform::new(Vec2::new(-270.0, 1100.0), 0.0),
+        Transform::new(Vec2::new(-270.0, 1200.0), 0.0),
+    ));
+
+    world.spawn(get_element(
+        String::from("memble-project"),
+        Transform::new(Vec2::new(-1400.0, 615.0), 90.0),
     ));
 
     world.spawn(get_camera(

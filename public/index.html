@@ -16,6 +16,7 @@
       * {
         padding: 0;
         margin: 0;
+        box-sizing:border-box;
       }
       body {
         height: 100%;
@@ -43,6 +44,11 @@
         top: -1000px;
         left: 0px;
       }
+      a:hover, a:visited, a:link, a:active
+      {
+        color:inherit;
+        text-decoration: none;
+      }
       #intro {
         font-size: 0.75rem;
         font-weight: 600;
@@ -53,6 +59,108 @@
         top: -1000px;
         left: 0px;
       }
+
+      .project {
+        transform-origin: left top 0;
+        color: #ddffda;
+        position: fixed;
+        white-space: nowrap;
+        top: -1000px;
+        left: 100px;
+        display:flex;
+        align-items:flex-end;
+      }
+      .project-left {
+        margin-right:12.5rem;
+        display:flex;
+        flex-direction:column;
+        align-items:flex-end;
+      }
+
+      .project-tech-section {
+        display:flex;
+        flex-direction:column;
+        align-items:flex-end;
+        margin-bottom:1.5rem;
+      }
+
+      .tech-tile {
+        color:#ffffff;
+        font-weight:600;
+        font-size:1rem;
+        margin-bottom:1.25rem;
+        border-radius:2rem;
+        padding:0.75rem 1.5rem;
+      }
+
+      .typescript {
+        background:#3575c0;
+      }
+
+      .react {
+        background:#0451ac;
+      }
+
+      .project-live-button {
+        border: 1px solid #ddffda;
+        text-align:center; 
+        font-size:1rem;
+        font-weight:600;
+        cursor:pointer;
+        padding-top:1.125rem;
+        padding-bottom:1.125rem;
+        width:12rem;
+        margin-bottom:1.27rem;
+      }
+
+      .project-live-button:hover{
+        background:#ddffda;
+        color:#101010;
+      }
+
+      .project-repo-button{
+        text-align:center; 
+        font-size:1rem;
+        font-weight:600;
+        cursor:pointer;
+        padding-top:1.125rem;
+        padding-bottom:1.125rem;
+        width:12rem;
+        background:#404040;
+        color:#ffffff;
+      }
+
+      .project-repo-button:hover {
+        background:#424242;
+      }
+
+      .project-title {
+        font-size:4.5rem;
+        font-weight:400;
+        margin-block-start: 0px;
+        margin-block-end: 0px;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+      }
+
+      .project-subtitle{
+        font-size:2rem;
+        font-weight:400;
+        color:#ffffff;
+      }
+
+      .project-description{
+        font-size:1rem;
+        font-weight:400;
+        width:12rem;
+        white-space:normal;
+        margin-bottom:2.5rem;
+      }
+
+      .project-image{
+        margin-bottom:2.2rem;
+      }
+
       #title {
         transform-origin: left top 0;
         color: #ddffda;
@@ -145,6 +253,26 @@
         </a>
       </div>
       <img src="./head.png" alt="image of david" width="163px" height="169px"></img>
+    </div>
+    <div id="memble-project" class="project" >
+      <div class="project-left">
+        <div class="project-tech-section">
+          <div class="tech-tile react">React</div>
+          <div class="tech-tile typescript">Typescript</div>
+        </div>
+        <a href="https://memble.davidkwong.net" target="_blank">
+          <div class="project-live-button">LIVE SITE</div>
+        </a>
+        <a href="https://github.com/brahms116/memble" target="_blank">
+          <div class="project-repo-button">GITHUB REPO</div>
+        </a>
+      </div>
+      <div class="project-right">
+        <img class="project-image" alt="memble-icon" src="./memble.png" width="120px" height="120px"></img>
+        <div class="project-description">A web application to help memorise bible passages</div>
+        <div class="project-subtitle">Web App</div>
+        <h2 class="project-title">Memble</h2>
+      </div>
     </div>
     <canvas id="canvas" class=""></canvas>
   </body>
