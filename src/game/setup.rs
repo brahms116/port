@@ -26,16 +26,6 @@ pub fn setup(world: &mut World) {
     );
     world.spawn_batch(walls);
 
-    let walls = get_octagon(
-        Vec2::y() * 2025.0,
-        1000.0,
-        Some(100.0),
-        None,
-        Some(100.0),
-        None,
-    );
-    world.spawn_batch(walls);
-
     /* Project 1 */
     let walls = get_octagon(
         Vec2::new(-1100.0, 925.0),
@@ -71,6 +61,56 @@ pub fn setup(world: &mut World) {
         None,
     );
 
+    world.spawn_batch(walls);
+
+    /* join 2-3 */
+
+    let walls = set_path(
+        vec![
+            Vec2::new(-2200.0, 2625.0),
+            Vec2::new(-2200.0, 2725.0),
+            Vec2::new(-1800.0, 3125.0),
+            Vec2::new(-1700.0, 3125.0),
+        ],
+        None,
+        None,
+    );
+    world.spawn_batch(walls);
+
+    /* project 3 */
+    let walls = get_octagon(
+        Vec2::new(-1100.0, 3125.0),
+        1000.0,
+        None,
+        Some(100.0),
+        None,
+        Some(100.0),
+    );
+
+    world.spawn_batch(walls);
+
+    /* join 3-4 */
+    let walls = set_path(
+        vec![
+            Vec2::new(-500.0, 3125.0),
+            Vec2::new(-400.0, 3125.0),
+            Vec2::new(0.0, 2725.0),
+            Vec2::new(0.0, 2625.0),
+        ],
+        None,
+        None,
+    );
+    world.spawn_batch(walls);
+
+    /* project 4 */
+    let walls = get_octagon(
+        Vec2::y() * 2025.0,
+        1000.0,
+        Some(100.0),
+        None,
+        Some(100.0),
+        None,
+    );
     world.spawn_batch(walls);
 
     world.spawn((InputController::new(),));
