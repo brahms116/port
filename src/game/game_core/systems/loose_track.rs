@@ -94,6 +94,10 @@ pub fn system_loose_tracking<T: GameApi>(
          */
         let opposite = distance - perpendicular_mag;
 
+        if diff_vec.mag() > 0.0 {
+            _api.log(&format!("opposite {:?}", opposite));
+        }
+
         /* After the source has moved "distance" in the direction perpendicular to the target's
          * motion, we calculate the movement the source has to take in the direction of the
          * target's motion inorder to maintain a fixed distanced to the target. Here, "side" is the
@@ -104,11 +108,23 @@ pub fn system_loose_tracking<T: GameApi>(
             - opposite.powi(2))
         .powf(0.5);
 
+        let mut target_dir_vec =
+            (prediction - target_transform.position).unit();
+
+        if target_dir_vec.mag() == 0.0 {
+            target_dir_vec = Vec2::y().rotate_deg(
+                target_transform.rotation
+                    + target_motion.angular_vel,
+            )
+        }
+
         /* Resolving the calculated magnitude to a vector in real space */
         let side = target_transform.position
-            + (prediction - target_transform.position)
-                .unit()
-                * -side;
+            + (target_dir_vec).unit() * -side;
+
+        if diff_vec.mag() > 0.0 {
+            _api.log(&format!("side {:?}", side));
+        }
 
         /* if the target is outside of the radius, we track it */
         if !is_inside {

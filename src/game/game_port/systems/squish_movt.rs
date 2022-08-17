@@ -27,19 +27,19 @@ pub fn system_squish_movt<T: GameApi>(
                         squish.front();
                     }
 
-                    let offset =
-                        squish.config.finish_height
-                            - squish.config.start_height;
+                    // let offset =
+                    //     squish.config.finish_height
+                    //         - squish.config.start_height;
 
-                    let offset =
-                        Vec2::new(0.0, offset * 0.5)
-                            .rotate_deg(transform.rotation);
+                    // let offset =
+                    //     Vec2::new(0.0, offset * 0.5)
+                    //         .rotate_deg(transform.rotation);
 
-                    if sm.is_forward {
-                        transform.position += offset;
-                    } else {
-                        transform.position -= offset;
-                    }
+                    // if sm.is_forward {
+                    //     transform.position += offset;
+                    // } else {
+                    //     transform.position -= offset;
+                    // }
 
                     sm.state = State::StartedAnimation;
                 }
@@ -65,17 +65,17 @@ pub fn system_squish_movt<T: GameApi>(
                         squish.back();
                     }
 
-                    let offset =
-                        squish.config.finish_height
-                            - squish.config.start_height;
-                    let offset =
-                        Vec2::new(0.0, offset * 0.5)
-                            .rotate_deg(transform.rotation);
-                    if sm.is_forward {
-                        transform.position += offset;
-                    } else {
-                        transform.position -= offset;
-                    }
+                    // let offset =
+                    //     squish.config.finish_height
+                    //         - squish.config.start_height;
+                    // let offset =
+                    //     Vec2::new(0.0, offset * 0.5)
+                    //         .rotate_deg(transform.rotation);
+                    // if sm.is_forward {
+                    //     transform.position += offset;
+                    // } else {
+                    //     transform.position -= offset;
+                    // }
                     movt.stop();
                     sm.state = State::StartedStopAnimation
                 }
