@@ -37,6 +37,11 @@ pub fn setup(world: &mut World) {
     );
     world.spawn_batch(walls);
 
+    world.spawn(get_element(
+        String::from("port-project"),
+        Transform::new(Vec2::new(-1175.0, 625.0), 90.0),
+    ));
+
     /* join 1-2 */
     let walls = set_path(
         vec![
@@ -60,6 +65,11 @@ pub fn setup(world: &mut World) {
         Some(100.0),
         None,
     );
+
+    world.spawn(get_element(
+        String::from("date-project"),
+        Transform::new(Vec2::new(-2500.0, 2400.0), 0.0),
+    ));
 
     world.spawn_batch(walls);
 
@@ -88,6 +98,11 @@ pub fn setup(world: &mut World) {
     );
 
     world.spawn_batch(walls);
+
+    world.spawn(get_element(
+        String::from("memble-project"),
+        Transform::new(Vec2::new(-875.0, 3425.0), -90.0),
+    ));
 
     /* join 3-4 */
     let walls = set_path(
@@ -136,11 +151,6 @@ pub fn setup(world: &mut World) {
     world.spawn(get_element(
         String::from("title"),
         Transform::new(Vec2::new(-270.0, 1200.0), 0.0),
-    ));
-
-    world.spawn(get_element(
-        String::from("memble-project"),
-        Transform::new(Vec2::new(-1400.0, 615.0), 90.0),
     ));
 
     world.spawn(get_camera(

@@ -77,6 +77,10 @@
         align-items:flex-end;
       }
 
+      .project-right {
+        width:25rem;
+      }
+
       .project-tech-section {
         display:flex;
         flex-direction:column;
@@ -86,7 +90,7 @@
 
       .tech-tile {
         color:#ffffff;
-        font-weight:600;
+        font-weight:400;
         font-size:1rem;
         margin-bottom:1.25rem;
         border-radius:2rem;
@@ -101,7 +105,19 @@
         background:#0451ac;
       }
 
-      .project-live-button {
+      .rust {
+        background:#DA7B24;
+      }
+      
+      .wasm, .c-sharp, .asp{
+        background:#5F0055;
+      }
+
+      .docker, .postgres {
+        background:#003068;
+      }
+
+      .port-button {
         border: 1px solid #ddffda;
         text-align:center; 
         font-size:1rem;
@@ -113,7 +129,7 @@
         margin-bottom:1.27rem;
       }
 
-      .project-live-button:hover{
+      .port-button:hover{
         background:#ddffda;
         color:#101010;
       }
@@ -137,6 +153,7 @@
       .project-title {
         font-size:4.5rem;
         font-weight:400;
+        white-space:normal;
         margin-block-start: 0px;
         margin-block-end: 0px;
         margin-inline-start: 0px;
@@ -249,11 +266,57 @@
         <div class="title-list">Rust</div>
         <div class="title-list">Typescript</div>
         <a href="https://github.com/brahms116" target="_blank">
-          <div class="title-github-button">GITHUB PROFILE</div>
+          <div class="port-button">GITHUB PROFILE</div>
         </a>
       </div>
       <img src="./head.png" alt="image of david" width="163px" height="169px"></img>
     </div>
+
+    <div id="date-project" class="project" >
+      <div class="project-left">
+        <div class="project-tech-section">
+          <div class="tech-tile c-sharp">C#</div>
+          <div class="tech-tile asp">ASP.NET</div>
+          <div class="tech-tile react">React</div>
+          <div class="tech-tile typescript">Typescript</div>
+          <div class="tech-tile docker">Docker</div>
+          <div class="tech-tile postgres">Postgres</div>
+        </div>
+        <a href="https://datecounter.davidkwong.net" target="_blank">
+          <div class="port-button">LIVE SITE</div>
+        </a>
+        <a href="https://github.com/brahms116/datecounterReact" target="_blank">
+          <div class="port-button">REACT REPO</div>
+        </a>
+        <a href="https://github.com/brahms116/datecounter_backend" target="_blank">
+          <div class="port-button">SERVER REPO</div>
+        </a>
+      </div>
+      <div class="project-right">
+        <img class="project-image" alt="date-icon" src="./date.png" width="120px" height="120px"></img>
+        <div class="project-description">Web application which allows users to save dates and counts the relative number of days from today</div>
+        <div class="project-subtitle">Web Application</div>
+        <h2 class="project-title">Date Counter</h2>
+      </div>
+    </div>
+
+    <div id="port-project" class="project" >
+      <div class="project-left">
+        <div class="project-tech-section">
+          <div class="tech-tile wasm">WASM</div>
+          <div class="tech-tile rust">Rust</div>
+        </div>
+        <a href="https://github.com/brahms116/port" target="_blank">
+          <div class="port-button">GITHUB REPO</div>
+        </a>
+      </div>
+      <div class="project-right">
+        <div class="project-description">An interactive portfolio built using rust, wasm and html canvas</div>
+        <h2 class="project-title">This</h2>
+        <div class="project-subtitle">Interactive Site</div>
+      </div>
+    </div>
+
     <div id="memble-project" class="project" >
       <div class="project-left">
         <div class="project-tech-section">
@@ -261,10 +324,10 @@
           <div class="tech-tile typescript">Typescript</div>
         </div>
         <a href="https://memble.davidkwong.net" target="_blank">
-          <div class="project-live-button">LIVE SITE</div>
+          <div class="port-button">LIVE SITE</div>
         </a>
         <a href="https://github.com/brahms116/memble" target="_blank">
-          <div class="project-repo-button">GITHUB REPO</div>
+          <div class="port-button">GITHUB REPO</div>
         </a>
       </div>
       <div class="project-right">
