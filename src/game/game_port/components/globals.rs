@@ -2,8 +2,6 @@ use super::*;
 
 pub struct Player();
 
-pub struct StoryBlocker();
-
 pub struct InputController {
     down_point: Option<Vec2>,
 }
