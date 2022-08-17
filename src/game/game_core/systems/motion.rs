@@ -1,20 +1,5 @@
 use super::*;
 
-pub fn entity_motion_system<T: 'static + Sync + Send>(
-    world: &mut World,
-) {
-    for (_id, (state, motion, transform, cb)) in world
-        .query_mut::<(
-            &mut T,
-            &mut Motion,
-            &mut Transform,
-            &StateMotionCb<T>,
-        )>()
-    {
-        cb.0(state, motion, transform);
-    }
-}
-
 pub fn system_motion<T: GameApi>(
     world: &mut World,
     _api: &T,
