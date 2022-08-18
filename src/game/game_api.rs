@@ -1,6 +1,6 @@
 use super::*;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct GameInput {
     pub up: bool,
     pub down: bool,
