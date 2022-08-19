@@ -8,7 +8,7 @@ pub struct Player();
 
 pub struct InputController {
     prev_dead_point: Option<Vec2>,
-    prev_mouse_point: Vec2,
+    prev_mouse_point: Option<Vec2>,
     prev_game_input: GameInput,
     deadzone_count: u32,
     frame_count: u32,
@@ -20,7 +20,7 @@ impl InputController {
     pub fn new() -> Self {
         Self {
             prev_dead_point: None,
-            prev_mouse_point: Vec2::default(),
+            prev_mouse_point: None,
             prev_game_input: GameInput::default(),
             deadzone_count: 0,
             frame_count: 0,
@@ -51,8 +51,13 @@ impl InputController {
 
         if let Some(pt) = self.prev_dead_point {
             let diff_vec = curr - pt;
-            let movt_vec = curr - self.prev_mouse_point;
-            self.prev_mouse_point = curr;
+            let movt_vec =
+                if let Some(prev) = self.prev_mouse_point {
+                    curr - prev
+                } else {
+                    Vec2::default()
+                };
+            self.prev_mouse_point = Some(curr);
 
             let mut start_travel_vec: Option<Vec2> = None;
 
@@ -69,7 +74,7 @@ impl InputController {
 
             if self.is_travelling {
                 self.frame_count += 1;
-                self.net_vec += diff_vec;
+                self.net_vec += movt_vec;
                 if self.frame_count == 5 {
                     self.frame_count = 0;
                     if self.net_vec.y < -30.0
