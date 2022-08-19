@@ -1,6 +1,6 @@
 use super::*;
 
-const DEADEZONE_COUNT: u32 = 2;
+const DEADEZONE_COUNT: u32 = 4;
 
 const STRAIGHT_RATIO: f64 = 1.0;
 
@@ -92,10 +92,10 @@ impl InputController {
                 if !is_up && !is_down {
                     if diff_vec.x > dead_zone {
                         output.left = false;
-                        output.right = true;
+                        output.right = diff_vec.x > 100.0;
                     }
                     if diff_vec.x < -dead_zone {
-                        output.left = true;
+                        output.left = diff_vec.x < -100.0;
                         output.right = false;
                     }
                 }
