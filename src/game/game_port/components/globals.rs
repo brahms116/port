@@ -72,41 +72,38 @@ impl InputController {
                 self.net_vec += diff_vec;
                 if self.frame_count == 5 {
                     self.frame_count = 0;
-                    if self.net_vec.mag() > 5.0 {
-                        if self.net_vec.y < -30.0
-                            && (self.net_vec.y
-                                / self.net_vec.x)
-                                .abs()
-                                > 3.5
+                    if self.net_vec.y < -30.0
+                        && (self.net_vec.y / self.net_vec.x)
+                            .abs()
+                            > 3.5
+                    {
+                        self.prev_game_input.up = false;
+                        self.prev_game_input.left = false;
+                        self.prev_game_input.right = false;
+                        self.prev_game_input.down = true;
+                    } else {
+                        if self.net_vec.x > 10.0
+                            && !self.prev_game_input.left
+                            || self.net_vec.x > 30.0
                         {
-                            self.prev_game_input.up = false;
+                            let was_left =
+                                self.prev_game_input.left;
                             self.prev_game_input.left =
                                 false;
                             self.prev_game_input.right =
-                                false;
-                            self.prev_game_input.down =
-                                true;
-                        } else {
-                            if self.net_vec.x > 0.0 {
-                                let was_left = self
-                                    .prev_game_input
-                                    .left;
-                                self.prev_game_input.left =
-                                    false;
-                                self.prev_game_input
-                                    .right = self.net_vec.x
-                                    > 50.0
+                                self.net_vec.x > 50.0
                                     || !was_left;
-                            } else {
-                                let was_right = self
-                                    .prev_game_input
-                                    .right;
-                                self.prev_game_input
-                                    .right = false;
-                                self.prev_game_input.left =
-                                    self.net_vec.x < -50.0
-                                        || !was_right;
-                            }
+                        } else if self.net_vec.x < -10.0
+                            && !self.prev_game_input.right
+                            || self.net_vec.x < -30.0
+                        {
+                            let was_right =
+                                self.prev_game_input.right;
+                            self.prev_game_input.right =
+                                false;
+                            self.prev_game_input.left =
+                                self.net_vec.x < -50.0
+                                    || !was_right;
                         }
                     }
                     self.net_vec = Vec2::default();
