@@ -72,7 +72,7 @@ impl InputController {
                 self.net_vec += diff_vec;
                 if self.frame_count == 5 {
                     self.frame_count = 0;
-                    if self.net_vec.mag() > dead_zone {
+                    if self.net_vec.mag() > 5.0 {
                         if self.net_vec.y < -30.0
                             && (self.net_vec.y
                                 / self.net_vec.x)
