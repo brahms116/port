@@ -38,7 +38,7 @@ impl InputController {
     }
 
     pub fn input(&mut self, curr: Vec2) -> GameInput {
-        let dead_zone = 12.0;
+        let dead_zone = 5.0;
 
         if let Some(pt) = self.prev_dead_point {
             let mut output = self.prev_game_input.clone();
