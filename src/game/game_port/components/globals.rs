@@ -88,16 +88,24 @@ impl InputController {
                                 true;
                         } else {
                             if self.net_vec.x > 0.0 {
+                                let was_left = self
+                                    .prev_game_input
+                                    .left;
                                 self.prev_game_input.left =
                                     false;
                                 self.prev_game_input
-                                    .right =
-                                    self.net_vec.x > 50.0;
+                                    .right = self.net_vec.x
+                                    > 50.0
+                                    || !was_left;
                             } else {
+                                let was_right = self
+                                    .prev_game_input
+                                    .right;
                                 self.prev_game_input
                                     .right = false;
                                 self.prev_game_input.left =
-                                    self.net_vec.x < -50.0;
+                                    self.net_vec.x < -50.0
+                                        || !was_right;
                             }
                         }
                     }
