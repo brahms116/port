@@ -91,12 +91,12 @@ impl InputController {
                             self.prev_game_input.left =
                                 false;
                             self.prev_game_input.right =
-                                self.net_vec.x > 20.0
+                                self.net_vec.x > 15.0
                         } else if self.net_vec.x < -10.0 {
                             self.prev_game_input.right =
                                 false;
                             self.prev_game_input.left =
-                                self.net_vec.x < -20.0
+                                self.net_vec.x < -15.0
                         }
                     }
                     self.net_vec = Vec2::default();
