@@ -75,7 +75,7 @@ impl InputController {
             if self.is_travelling {
                 self.frame_count += 1;
                 self.net_vec += movt_vec;
-                if self.frame_count == 5 {
+                if self.frame_count == 20 {
                     self.frame_count = 0;
                     if self.net_vec.y < -30.0
                         && (self.net_vec.y / self.net_vec.x)
