@@ -2,10 +2,8 @@ use super::*;
 
 #[derive(Debug, Default, Clone)]
 pub struct GameInput {
-    pub up: bool,
-    pub down: bool,
-    pub left: bool,
-    pub right: bool,
+    pub horizontal: f64,
+    pub vertical: f64,
 }
 
 pub trait GameApi {

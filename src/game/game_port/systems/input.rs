@@ -17,12 +17,25 @@ pub fn system_input<T: GameApi>(
         let mouse_output = controller.input(mouse.pos);
         let keyboard_output = api.key_inputs();
 
+        if keyboard_output.horizontal != 0.0 {
+            api.log(&format!(
+                "{}",
+                keyboard_output.horizontal
+            ));
+        }
+
         return GameInput {
-            up: mouse_output.up || keyboard_output.up,
-            down: mouse_output.down || keyboard_output.down,
-            left: mouse_output.left || keyboard_output.left,
-            right: mouse_output.right
-                || keyboard_output.right,
+            horizontal: if keyboard_output.horizontal == 0.0
+            {
+                mouse_output.horizontal
+            } else {
+                keyboard_output.horizontal
+            },
+            vertical: if keyboard_output.vertical == 0.0 {
+                mouse_output.vertical
+            } else {
+                keyboard_output.vertical
+            },
         };
     }
     GameInput::default()
