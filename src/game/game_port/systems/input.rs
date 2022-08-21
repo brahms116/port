@@ -24,7 +24,7 @@ pub fn system_input<T: GameApi>(
             } else {
                 keyboard_output.horizontal
             },
-            vertical: if keyboard_output.horizontal == 0.0 {
+            vertical: if keyboard_output.vertical == 0.0 {
                 mouse_output.vertical
             } else {
                 keyboard_output.vertical
