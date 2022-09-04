@@ -25,22 +25,10 @@ pub fn system_player_movt<T: GameApi>(
         }
 
         if inputs.vertical > 0.0 {
-            if inputs.horizontal>0.0 && !rotation.is_right() {
-                rotation.right();
-            }
-
-            if inputs.horizontal < 0.0 && !rotation.is_left() {
-                rotation.left();
-            }
+            rotation.factor = inputs.horizontal;
         }
         if inputs.vertical < 0.0 {
-            if inputs.horizontal>0.0 && !rotation.is_left() {
-                rotation.left();
-            }
-
-            if inputs.horizontal < 0.0 && !rotation.is_right() {
-                rotation.right();
-            }
+            rotation.factor = -inputs.horizontal;
         }
     }
 }
