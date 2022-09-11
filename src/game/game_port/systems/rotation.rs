@@ -8,6 +8,6 @@ pub fn system_rotation<T: GameApi>(
         world.query_mut::<(&mut Rotation, &mut Motion)>()
     {
         let speed = rot.config.rotation_speed;
-        motion.angular_accel = speed * rot.factor;
+        motion.angular_vel = speed * rot.factor;
     }
 }

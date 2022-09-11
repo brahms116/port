@@ -17,6 +17,13 @@ pub fn system_input<T: GameApi>(
         let mouse_output = controller.input(mouse.pos);
         let keyboard_output = api.key_inputs();
 
+        if keyboard_output.horizontal != 0.0 {
+            api.log(&format!(
+                "{}",
+                keyboard_output.horizontal
+            ));
+        }
+
         return GameInput {
             horizontal: if keyboard_output.horizontal == 0.0
             {

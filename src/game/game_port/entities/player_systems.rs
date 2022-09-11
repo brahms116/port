@@ -24,11 +24,12 @@ pub fn system_player_movt<T: GameApi>(
             rotation.stop();
         }
 
+
         if inputs.vertical > 0.0 {
-            rotation.factor = inputs.horizontal;
+            rotation.factor = -inputs.horizontal;
         }
         if inputs.vertical < 0.0 {
-            rotation.factor = -inputs.horizontal;
+            rotation.factor = inputs.horizontal;
         }
     }
 }
