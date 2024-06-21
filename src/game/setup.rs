@@ -67,7 +67,7 @@ pub fn setup(world: &mut World) {
     );
 
     world.spawn(get_element(
-        String::from("date-project"),
+        String::from("memble-project"),
         Transform::new(Vec2::new(-2500.0, 2400.0), 0.0),
     ));
 
@@ -99,10 +99,10 @@ pub fn setup(world: &mut World) {
 
     world.spawn_batch(walls);
 
-    world.spawn(get_element(
-        String::from("memble-project"),
-        Transform::new(Vec2::new(-875.0, 3425.0), -90.0),
-    ));
+    // world.spawn(get_element(
+    //     String::from("memble-project"),
+    //     Transform::new(Vec2::new(-875.0, 3425.0), -90.0),
+    // ));
 
     /* join 3-4 */
     let walls = set_path(
@@ -135,12 +135,12 @@ pub fn setup(world: &mut World) {
 
     world.spawn(get_element(
         String::from("hello-there"),
-        Transform::new(Vec2::new(-80.0, 100.0), 0.0),
+        Transform::new(Vec2::new(-90.0, 100.0), 0.0),
     ));
 
     world.spawn(get_element(
         String::from("instructions"),
-        Transform::new(Vec2::new(-80.0, 45.0), 0.0),
+        Transform::new(Vec2::new(-90.0, 45.0), 0.0),
     ));
 
     world.spawn(get_element(
