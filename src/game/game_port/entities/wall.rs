@@ -18,9 +18,9 @@ pub fn get_wall(
     let surface = Surface {
         points: vec![v1, v2, v3, v4],
         color: RGBA {
-            r: 67,
-            g: 78,
-            b: 66,
+            r: 188,
+            g: 167,
+            b: 94,
             a: 1.0,
         },
     };

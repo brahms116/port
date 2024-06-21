@@ -8,9 +8,9 @@ pub const PLAYER_SQUISH_WIDTH: f64 = 30.0;
 pub const PLAYER_MOVE_HEIGHT: f64 = 20.0;
 pub const PLAYER_MOVE_WIDTH: f64 = 8.0;
 pub const PLAYER_COLOR: RGBA = RGBA {
-    r: 221,
+    r: 255,
     g: 255,
-    b: 218,
+    b: 255,
     a: 1.0,
 };
 
