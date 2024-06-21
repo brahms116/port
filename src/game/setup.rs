@@ -143,10 +143,6 @@ pub fn setup(world: &mut World) {
         Transform::new(Vec2::new(-90.0, 45.0), 0.0),
     ));
 
-    world.spawn(get_element(
-        String::from("intro"),
-        Transform::new(Vec2::new(550.0, 900.0), -90.0),
-    ));
 
     world.spawn(get_element(
         String::from("title"),
