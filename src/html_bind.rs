@@ -150,20 +150,23 @@ impl GameRunner<HTMLApi> {
                     let mut api = api.borrow_mut();
                     let key = event.key();
                     if key == "w" || key == "ArrowUp" {
-                        api.keyboard_input.vertical = 1.0;
+                        api.keyboard_input.down = false;
+                        api.keyboard_input.up = true;
                     } else if key == "a"
                         || key == "ArrowLeft"
                     {
-                        api.keyboard_input.horizontal =
-                            -1.0;
+                        api.keyboard_input.right = false;
+                        api.keyboard_input.left = true;
                     } else if key == "s"
                         || key == "ArrowDown"
                     {
-                        api.keyboard_input.vertical = -1.0;
+                        api.keyboard_input.up = false;
+                        api.keyboard_input.down = true;
                     } else if key == "d"
                         || key == "ArrowRight"
                     {
-                        api.keyboard_input.horizontal = 1.0;
+                        api.keyboard_input.left = false;
+                        api.keyboard_input.right = true;
                     }
                 },
             );
@@ -183,30 +186,20 @@ impl GameRunner<HTMLApi> {
                 move |event: web_sys::KeyboardEvent| {
                     let mut api = api.borrow_mut();
                     let key = event.key();
-                    if key == "w"
-                        || key == "ArrowUp"
-                            && api.keyboard_input.vertical
-                                > 0.0
-                    {
-                        api.keyboard_input.vertical = 0.0;
+                    if key == "w" || key == "ArrowUp" {
+                        api.keyboard_input.up = false;
                     } else if key == "a"
                         || key == "ArrowLeft"
-                            && api.keyboard_input.horizontal
-                                < 0.0
                     {
-                        api.keyboard_input.horizontal = 0.0;
+                        api.keyboard_input.left = false;
                     } else if key == "s"
                         || key == "ArrowDown"
-                            && api.keyboard_input.vertical
-                                < 0.0
                     {
-                        api.keyboard_input.vertical = 0.0;
+                        api.keyboard_input.down = false;
                     } else if key == "d"
                         || key == "ArrowRight"
-                            && api.keyboard_input.horizontal
-                                > 0.0
                     {
-                        api.keyboard_input.horizontal = 0.0;
+                        api.keyboard_input.right = false;
                     }
                 },
             );

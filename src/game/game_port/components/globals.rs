@@ -82,22 +82,22 @@ impl InputController {
                             .abs()
                             > 3.5
                     {
-                        // self.prev_game_input.up = false;
-                        // self.prev_game_input.left = false;
-                        // self.prev_game_input.right = false;
-                        // self.prev_game_input.down = true;
+                        self.prev_game_input.up = false;
+                        self.prev_game_input.left = false;
+                        self.prev_game_input.right = false;
+                        self.prev_game_input.down = true;
                     } else {
-                        // if self.net_vec.x > 10.0 {
-                        //     self.prev_game_input.left =
-                        //         false;
-                        //     self.prev_game_input.right =
-                        //         self.net_vec.x > 15.0
-                        // } else if self.net_vec.x < -10.0 {
-                        //     self.prev_game_input.right =
-                        //         false;
-                        //     self.prev_game_input.left =
-                        //         self.net_vec.x < -15.0
-                        // }
+                        if self.net_vec.x > 10.0 {
+                            self.prev_game_input.left =
+                                false;
+                            self.prev_game_input.right =
+                                self.net_vec.x > 15.0
+                        } else if self.net_vec.x < -10.0 {
+                            self.prev_game_input.right =
+                                false;
+                            self.prev_game_input.left =
+                                self.net_vec.x < -15.0
+                        }
                     }
                     self.net_vec = Vec2::default();
                 }
@@ -105,20 +105,20 @@ impl InputController {
                 start_travel_vec
             {
                 if travel_vec.mag() > dead_zone {
-                    // let ratio =
-                    //     (travel_vec.y / travel_vec.x).abs();
-                    // if ratio < 0.5 {
-                    //     self.prev_game_input.left =
-                    //         travel_vec.x < 0.0;
-                    //     self.prev_game_input.right =
-                    //         travel_vec.x > 0.0;
-                    // } else {
-                    //     self.is_travelling = true;
-                    //     self.prev_game_input.up =
-                    //         travel_vec.y > 0.0;
-                    //     self.prev_game_input.down =
-                    //         travel_vec.y < 0.0;
-                    // }
+                    let ratio =
+                        (travel_vec.y / travel_vec.x).abs();
+                    if ratio < 0.5 {
+                        self.prev_game_input.left =
+                            travel_vec.x < 0.0;
+                        self.prev_game_input.right =
+                            travel_vec.x > 0.0;
+                    } else {
+                        self.is_travelling = true;
+                        self.prev_game_input.up =
+                            travel_vec.y > 0.0;
+                        self.prev_game_input.down =
+                            travel_vec.y < 0.0;
+                    }
                 }
             }
 
