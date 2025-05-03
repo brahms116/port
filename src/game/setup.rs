@@ -67,8 +67,8 @@ pub fn setup(world: &mut World) {
     );
 
     world.spawn(get_element(
-        String::from("memble-project"),
-        Transform::new(Vec2::new(-2500.0, 2400.0), 0.0),
+        String::from("between-project"),
+        Transform::new(Vec2::new(-2500.0, 2200.0), 0.0),
     ));
 
     world.spawn_batch(walls);
@@ -99,10 +99,10 @@ pub fn setup(world: &mut World) {
 
     world.spawn_batch(walls);
 
-    // world.spawn(get_element(
-    //     String::from("memble-project"),
-    //     Transform::new(Vec2::new(-875.0, 3425.0), -90.0),
-    // ));
+    world.spawn(get_element(
+        String::from("rusty-kv-project"),
+        Transform::new(Vec2::new(-875.0, 3425.0), -90.0),
+    ));
 
     /* join 3-4 */
     let walls = set_path(
@@ -127,6 +127,11 @@ pub fn setup(world: &mut World) {
         None,
     );
     world.spawn_batch(walls);
+
+    world.spawn(get_element(
+        String::from("vulkan-again-project"),
+        Transform::new(Vec2::new(300.0, 1800.0), 180.0),
+    ));
 
     world.spawn((InputController::new(),));
     let player = world.spawn(create_player_square(

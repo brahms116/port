@@ -101,6 +101,14 @@
         background: #0451ac;
       }
 
+      .golang {
+        background: #00ADD8;
+      }
+
+      .cpp {
+        background: #f34b7d;
+      }
+
       .rust {
         background: #da7b24;
       }
@@ -242,7 +250,7 @@
         <div>I'm</div>
         <h1><span id="david">David</span></h1>
         <div class="title-subtitle">Software Developer</div>
-        <div class="title-list">Haskell</div>
+        <div class="title-list">Golang</div>
         <div class="title-list">Rust</div>
         <div class="title-list">Typescript</div>
         <a href="https://github.com/brahms116" target="_blank">
@@ -271,34 +279,60 @@
       </div>
     </div>
 
-    <div id="memble-project" class="project">
+    <div id="between-project" class="project">
       <div class="project-left">
         <div class="project-tech-section">
-          <div class="tech-tile react">React</div>
-          <div class="tech-tile typescript">Typescript</div>
+          <div class="tech-tile golang">Golang</div>
         </div>
-        <a href="https://memble.davidkwong.net" target="_blank">
-          <div class="port-button">LIVE SITE</div>
-        </a>
-        <a href="https://github.com/brahms116/memble" target="_blank">
+        <a href="https://github.com/brahms116/between" target="_blank">
           <div class="port-button">GITHUB REPO</div>
         </a>
       </div>
       <div class="project-right">
-        <img
-          class="project-image"
-          alt="memble-icon"
-          src="./memble.png"
-          width="120px"
-          height="120px"
-        />
         <div class="project-description">
-          A web application to help memorise bible passages
+          A small language to describe DTOs and sync them between languages.
         </div>
-        <div class="project-subtitle">Web App</div>
-        <h2 class="project-title">Memble</h2>
+        <div class="project-subtitle">Toy language </br> and LSP</div>
+        <h2 class="project-title">Between</h2>
       </div>
     </div>
+
+    <div id="rusty-kv-project" class="project">
+      <div class="project-left">
+        <div class="project-tech-section">
+          <div class="tech-tile rust">Rust</div>
+        </div>
+        <a href="https://github.com/brahms116/silly_rusty_kv" target="_blank">
+          <div class="port-button">GITHUB REPO</div>
+        </a>
+      </div>
+      <div class="project-right">
+        <div class="project-description">
+          A disk-backed key-value store, using extensible hashing.
+        </div>
+        <div class="project-subtitle">A toy key-value</br>database</div>
+        <h2 class="project-title">Rusty kv</h2>
+      </div>
+    </div>
+
+
+    <div id="vulkan-again-project" class="project">
+      <div class="project-left">
+        <div class="project-tech-section">
+          <div class="tech-tile cpp">C++</div>
+        </div>
+        <a href="https://github.com/brahms116/silly_rusty_kv" target="_blank">
+          <div class="port-button">GITHUB REPO</div>
+        </a>
+      </div>
+      <div class="project-right">
+        <div class="project-description">
+          A Vulkan renderer built by following a tutorial, extended to include textures and shadow maps.
+        </div>
+        <h2 class="project-title">Vulkan Renderer</h2>
+      </div>
+    </div>
+
     <canvas id="canvas" class=""></canvas>
   </body>
   <script type="module">
